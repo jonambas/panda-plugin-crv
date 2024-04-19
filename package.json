@@ -43,11 +43,11 @@
     "e2e": "playwright test --ui"
   },
   "dependencies": {
-    "json5": "^2.2.3",
+    "json5": "2.2.3",
     "ts-morph": "22.0.0"
   },
   "devDependencies": {
-    "@pandacss/dev": "^0.37.2",
+    "@pandacss/dev": "0.37.2",
     "@pandacss/types": "0.37.2",
     "@playwright/test": "1.43.0",
     "@types/node": "20.12.7",
