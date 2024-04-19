@@ -15,6 +15,9 @@ const componentRecipe = cva({
     p: 3,
   },
   variants: {
+    test: {
+      foo: {},
+    },
     ...crv('tone', {
       neutral: {
         bg: 'gray.200',
@@ -26,19 +29,27 @@ const componentRecipe = cva({
         bg: 'green.200',
       },
     }),
+    ...crv('visible', {
+      false: { opacity: 0 },
+      true: { opacity: 1 },
+    }),
   },
 });
 
 const Component: FC<
   PropsWithChildren<{
     tone?: ResponsiveVariant<'neutral' | 'negative' | 'positive'>;
+    visible?: ResponsiveVariant<boolean>;
   }>
 > = (props) => {
-  const { children, tone = 'negative' } = props;
+  const { children, tone = 'negative', visible } = props;
   const splitTone = splitCrv('tone', tone);
+  const splitVisible = splitCrv('visible', visible);
 
   return (
-    <div className={cx(componentRecipe({ ...splitTone }))}>{children}</div>
+    <div className={cx(componentRecipe({ ...splitTone, ...splitVisible }))}>
+      {children}
+    </div>
   );
 };
 
@@ -54,9 +65,12 @@ export const App = () => {
         justifyContent: 'center',
       })}
     >
-      <Component tone="positive">Hello</Component>
-      <Component tone={{ base: 'negative', lg: 'positive' }}>
-        Responsive
+      <Component tone="positive">Direct variant</Component>
+      <Component tone={{ base: 'negative', md: 'neutral', lg: 'positive' }}>
+        Responsive variants
+      </Component>
+      <Component visible={{ base: true, md: false, lg: true }}>
+        Responsive boolean variants
       </Component>
     </div>
   );

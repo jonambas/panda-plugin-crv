@@ -60,9 +60,11 @@ export const splitCrv = (name, value) => {
 };`;
 
 export const crvFuncDts = (breakpoints: string[]) => `/* eslint-disable */
+import type { SystemStyleObject } from '../types/system-types';
+
 type CrvBreakpoints = ${breakpoints.map((bp) => `'${bp}'`).join(' | ')};
 
-export declare const crv: <T extends string, P extends Record<string, any>>(
+export declare const crv: <T extends string, P extends Record<any, SystemStyleObject>>(
   name: T,
   styles: P
 ) => Record<\`\${T}_\${CrvBreakpoints}\` | T, P>;

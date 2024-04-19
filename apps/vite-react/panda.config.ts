@@ -1,5 +1,5 @@
 import { defineConfig } from '@pandacss/dev';
-import { pluginCreateResponsiveVariants } from 'panda-plugin-crv';
+import { pluginResponsiveVariants } from 'panda-plugin-crv';
 import { semanticTokens } from '../fixtures/tokens';
 
 export default defineConfig({
@@ -9,10 +9,10 @@ export default defineConfig({
     extend: {
       semanticTokens,
       breakpoints: {
-        bigbig: '2000px',
+        verybig: '2000px',
       },
     },
   },
   outdir: 'styled-system',
-  plugins: [pluginCreateResponsiveVariants()],
+  plugins: [pluginResponsiveVariants()],
 });

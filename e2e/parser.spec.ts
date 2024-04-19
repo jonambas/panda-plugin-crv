@@ -5,41 +5,52 @@ test.describe('parser', () => {
     await page.goto('/');
   });
 
-  test('semantic tokens', async ({ page }) => {
-    await expect(page.getByText('{colors.tone.positive}')).toHaveCSS(
+  test('direct variant', async ({ page }) => {
+    await expect(page.getByText('Direct variant')).toHaveCSS(
       'background-color',
-      'rgb(34, 197, 94)',
-    );
-
-    await expect(page.getByText('{colors.tone.positive}')).toHaveCSS(
-      'background-color',
-      'rgb(34, 197, 94)',
+      'rgb(187, 247, 208)',
     );
   });
 
-  test('raw values', async ({ page }) => {
-    await expect(page.getByText('#0000ff')).toHaveCSS(
+  test('responsive variant', async ({ page }) => {
+    await expect(page.getByText('Responsive variant')).toHaveCSS(
       'background-color',
-      'rgb(0, 0, 255)',
+      'rgb(187, 247, 208)',
     );
-    await expect(page.getByText('#ff0000')).toHaveCSS(
+
+    page.setViewportSize({ width: 768, height: 1024 });
+
+    await expect(page.getByText('Responsive variant')).toHaveCSS(
       'background-color',
-      'rgb(255, 0, 0)',
+      'rgb(229, 231, 235)',
+    );
+
+    page.setViewportSize({ width: 300, height: 1024 });
+
+    await expect(page.getByText('Responsive variant')).toHaveCSS(
+      'background-color',
+      'rgb(254, 202, 202)',
     );
   });
 
-  test('value keys', async ({ page }) => {
-    await expect(page.getByText('#9a9a9a')).toHaveCSS(
-      'background-color',
-      'rgb(154, 154, 154)',
+  test('boolean variants', async ({ page }) => {
+    await expect(page.getByText('Responsive boolean variants')).toHaveCSS(
+      'opacity',
+      '1',
     );
 
-    const el = page.getByText('{"base":"#000","lg":"#555","_hover":"#999"}');
+    page.setViewportSize({ width: 768, height: 1024 });
 
-    await expect(el).toHaveCSS('background-color', 'rgb(85, 85, 85)');
-    await page.setViewportSize({ width: 320, height: 568 });
-    await expect(el).toHaveCSS('background-color', 'rgb(0, 0, 0)');
-    await el.hover();
-    await expect(el).toHaveCSS('background-color', 'rgb(153, 153, 153)');
+    await expect(page.getByText('Responsive boolean variants')).toHaveCSS(
+      'opacity',
+      '0',
+    );
+
+    page.setViewportSize({ width: 300, height: 1024 });
+
+    await expect(page.getByText('Responsive boolean variants')).toHaveCSS(
+      'opacity',
+      '1',
+    );
   });
 });
