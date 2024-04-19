@@ -1,0 +1,66 @@
+{
+  "name": "panda-plugin-crv",
+  "version": "0.0.1",
+  "description": "A Panda CSS plugin for responsive variants",
+  "author": "Jon Ambas <jon@jonambas.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonambas/panda-plugin-crv.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jonambas/panda-plugin-crv/issues"
+  },
+  "homepage": "https://github.com/jonambas/panda-plugin-crv",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest",
+    "test:ci": "vitest run --coverage --reporter=basic",
+    "vite:prepare": "cd apps/vite-react && npm ci",
+    "vite:start": "cd apps/vite-react && npm run build && npm run preview",
+    "e2e": "playwright test --ui"
+  },
+  "dependencies": {
+    "json5": "^2.2.3",
+    "ts-morph": "22.0.0"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "^0.37.2",
+    "@pandacss/types": "0.37.2",
+    "@playwright/test": "1.43.0",
+    "@types/node": "20.12.7",
+    "@vitest/coverage-v8": "1.4.0",
+    "prettier": "3.2.5",
+    "tsup": "8.0.2",
+    "typescript": "5.4.5",
+    "vitest": "1.4.0"
+  },
+  "keywords": [
+    "panda",
+    "pandacss",
+    "plugin",
+    "typescript"
+  ]
+}

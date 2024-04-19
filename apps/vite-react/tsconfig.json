@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@/styled-system/*": ["./styled-system/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "styled-system"],
+  "exclude": ["node_modules"]
+}
