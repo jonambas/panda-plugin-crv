@@ -67,9 +67,11 @@ describe('codegen', () => {
             },
             {
               "code": "/* eslint-disable */
+      import type { SystemStyleObject } from '../types/system-types';
+
       type CrvBreakpoints = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
-      export declare const crv: <T extends string, P extends Record<string, any>>(
+      export declare const crv: <T extends string, P extends Record<any, SystemStyleObject>>(
         name: T,
         styles: P
       ) => Record<\`\${T}_\${CrvBreakpoints}\` | T, P>;
