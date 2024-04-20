@@ -51,11 +51,11 @@
     "@pandacss/types": "0.37.2",
     "@playwright/test": "1.43.1",
     "@types/node": "20.12.7",
-    "@vitest/coverage-v8": "1.4.0",
+    "@vitest/coverage-v8": "1.5.0",
     "prettier": "3.2.5",
     "tsup": "8.0.2",
     "typescript": "5.4.5",
-    "vitest": "1.4.0"
+    "vitest": "1.5.0"
   },
   "keywords": [
     "panda",
