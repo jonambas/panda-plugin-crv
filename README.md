@@ -35,7 +35,7 @@ const styles = cva({
     // create responsive variants
     ...crv('variant', {
       primary: { bg: 'blue.500' },
-      secondary: { bg: 'gray.500' }
+      secondary: { bg: 'gray.500' },
       destructive: { bg: 'red.500' },
     })
   }
