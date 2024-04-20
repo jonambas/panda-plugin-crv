@@ -58,7 +58,7 @@ const Component: FC<ComponentProps> = (props) => {
   const { children, variant = 'secondary' } = props;
   const variants = splitCrv('variant', variant);
 
-  return <div className={componentRecipe({ ...variants })}>{children}</div>;
+  return <div className={styles({ ...variants })}>{children}</div>;
 };
 ```
 
