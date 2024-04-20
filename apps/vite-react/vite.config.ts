@@ -2,8 +2,6 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import unplugin from '@pandabox/unplugin';
-import { transform } from 'panda-plugin-ct';
-import { componentTokens } from '../fixtures/tokens';
 
 // TODO, split testing for this macro
 // const plugins =

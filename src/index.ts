@@ -11,7 +11,7 @@ import { createContext } from './context';
 const pluginResponsiveVariants = (): PandaPlugin => {
   const context = createContext();
   return {
-    name: 'panda-plugin-ct',
+    name: 'panda-plugin-crv',
     hooks: {
       'context:created': (args) => {
         context.debug = args.logger?.debug;
