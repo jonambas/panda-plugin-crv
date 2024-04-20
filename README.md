@@ -1,6 +1,12 @@
 # panda-plugin-crv
 
-A [Panda CSS](https://panda-css.com) plugin for responsive `cva` variants.
+A [Panda CSS](https://panda-css.com) plugin for responsive `cva` variants. This plugin allows you to to use Panda's responsive syntax, without config recipes, such as:
+
+```tsx
+<Component variant={{ base: 'secondary', lg: 'primary' }} />
+```
+
+---
 
 ### Installation
 
@@ -23,7 +29,7 @@ export default defineConfig({
 
 ### Usage
 
-This plugin removes the boilerplate required to build responsive variants within `cva`. This allows you to (1) co-locate responsive variants near your components instead of in Panda's config, and (2) generate atomic class names.
+This plugin removes the boilerplate required to build responsive variants within `cva`. This allows you to (1) co-locate variants near your components instead of in Panda's config, and (2) generate atomic class names.
 
 Example component styles:
 
@@ -37,8 +43,8 @@ const styles = cva({
       primary: { bg: 'blue.500' },
       secondary: { bg: 'gray.500' },
       destructive: { bg: 'red.500' },
-    })
-  }
+    }),
+  },
 });
 ```
 
@@ -68,3 +74,10 @@ Using your component will look like this:
 <Component variant="primary" />
 <Component variant={{ base: 'secondary', lg: 'primary' }} />
 ```
+
+---
+
+### Current Limitations
+
+- The plugin generates variants for all breakpoints defined in your theme, and does not include Panda's generated breakpoints, such as `mdDown`, `mdOnly`, `mdToLg`.
+- There is currently no way to limit which breakpoints you wish to generate.
