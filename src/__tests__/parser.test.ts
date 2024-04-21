@@ -23,7 +23,7 @@ describe('parser', () => {
         // background: crv('nope'),
       },
       variants: {
-        ...crv('tone', {
+        ...crv(\`tone\`, {
           negative: { bg: "red.200" },
           "positive": { bg: "green.200" }
         }),

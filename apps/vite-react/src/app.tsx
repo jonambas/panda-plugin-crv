@@ -18,9 +18,9 @@ const componentRecipe = cva({
     test: {
       foo: {},
     },
-    ...crv('tone', {
+    ...crv(`tone`, {
       neutral: {
-        bg: 'gray.200',
+        bg: `gray.200`,
       },
       negative: {
         bg: 'red.200',

@@ -35,7 +35,7 @@ export const parser = (
     .filter((node) => node.getExpression().getText() === alias);
 
   for (const node of calls) {
-    const prop = node.getArguments()[0]?.getText().replace(/['"]/g, '');
+    const prop = node.getArguments()[0]?.getText().replace(/['"`]/g, '');
     const styles = node.getArguments()[1]?.getText() ?? '{}';
     const value = crv(prop, json5.parse(styles), context.breakpoints);
 
