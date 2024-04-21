@@ -3,5 +3,11 @@
   "extends": ["config:base"],
   "prConcurrentLimit": 3,
   "rangeStrategy": "pin",
-  "dependencyDashboard": false
+  "dependencyDashboard": false,
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["patch", "pin", "digest"],
+      "automerge": true
+    }
+  ]
 }
