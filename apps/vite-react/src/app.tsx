@@ -5,6 +5,7 @@ import {
   css,
   cva,
   cx,
+  splitResponsiveVariant,
   ResponsiveVariant,
   splitCrv,
 } from '@/styled-system/css';
@@ -44,7 +45,7 @@ const Component: FC<
 > = (props) => {
   const { children, tone = 'negative', visible } = props;
   const splitTone = splitCrv('tone', tone);
-  const splitVisible = splitCrv('visible', visible);
+  const splitVisible = splitResponsiveVariant('visible', visible);
 
   return (
     <div className={cx(componentRecipe({ ...splitTone, ...splitVisible }))}>

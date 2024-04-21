@@ -1,9 +1,11 @@
 import { crv, crvFunc } from '../crv';
 import { breakpoints } from './fixtures';
 
-const { splitCrv, crv: crvCodegen } = await import(
-  `data:text/javascript,${crvFunc(Object.keys(breakpoints))}`
-);
+const {
+  splitCrv,
+  crv: crvCodegen,
+  splitResponsiveVariant,
+} = await import(`data:text/javascript,${crvFunc(Object.keys(breakpoints))}`);
 
 describe('crv', () => {
   it('returns the expected variants', () => {
@@ -232,6 +234,10 @@ describe('crv codegen', () => {
 });
 
 describe('splitCrv codegen', () => {
+  it('is an alias for splitResponsiveVariant', () => {
+    expect(splitResponsiveVariant).toBe(splitCrv);
+  });
+
   it('handles non-reponsive values', async () => {
     expect(splitCrv('prop', 'variant')).toEqual({ prop: 'variant' });
     expect(splitCrv('prop', false)).toEqual({ prop: false });
