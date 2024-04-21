@@ -48,7 +48,7 @@ export const crv = (name, styles) => {
   return variants;
 };
 
-export const splitCrv = (name, value) => {
+export const splitResponsiveVariant = (name, value) => {
   if (typeof value !== 'object') {
     return { [name]: value };
   }
@@ -62,7 +62,10 @@ export const splitCrv = (name, value) => {
   }
 
   return variants;
-};`;
+};
+
+export const splitCrv = splitResponsiveVariant;
+`;
 
 export const crvFuncDts = (breakpoints: string[]) => `/* eslint-disable */
 import type { SystemStyleObject } from '../types/system-types';
@@ -89,9 +92,12 @@ export declare const crv: <T extends string, P extends Record<any, SystemStyleOb
 /**
  * Splits responsive objects into \`crv\` variants
  */
-export declare const splitCrv: <T extends string>(
+type SplitResponsiveVariant = <T extends string>(
   name: T,
   value: any
 ) => Record<\`\${T}_\${CrvBreakpoints}\` | T, any>;
+
+export declare const splitCrv: SplitResponsiveVariant;
+export declare const splitResponsiveVariant: SplitResponsiveVariant;
 
 export type ResponsiveVariant<T> = Partial<Record<'base' | CrvBreakpoints, T>> | T;`;
