@@ -45,76 +45,7 @@ describe('parser', () => {
               // background: crv('nope'),
             },
             variants: {
-              ...{
-                  "tone": {
-                    "negative": {
-                      "bg": "red.200"
-                    },
-                    "positive": {
-                      "bg": "green.200"
-                    }
-                  },
-                  "tone_sm": {
-                    "negative": {
-                      "sm": {
-                        "bg": "red.200"
-                      }
-                    },
-                    "positive": {
-                      "sm": {
-                        "bg": "green.200"
-                      }
-                    }
-                  },
-                  "tone_md": {
-                    "negative": {
-                      "md": {
-                        "bg": "red.200"
-                      }
-                    },
-                    "positive": {
-                      "md": {
-                        "bg": "green.200"
-                      }
-                    }
-                  },
-                  "tone_lg": {
-                    "negative": {
-                      "lg": {
-                        "bg": "red.200"
-                      }
-                    },
-                    "positive": {
-                      "lg": {
-                        "bg": "green.200"
-                      }
-                    }
-                  },
-                  "tone_xl": {
-                    "negative": {
-                      "xl": {
-                        "bg": "red.200"
-                      }
-                    },
-                    "positive": {
-                      "xl": {
-                        "bg": "green.200"
-                      }
-                    }
-                  },
-                  "tone_xxl": {
-                    "negative": {
-                      "xxl": {
-                        "bg": "red.200"
-                      }
-                    },
-                    "positive": {
-                      "xxl": {
-                        "bg": "green.200"
-                      }
-                    }
-                  }
-                },
+              ...{"tone":{"negative":{"bg":"red.200"},"positive":{"bg":"green.200"}},"tone_sm":{"negative":{"sm":{"bg":"red.200"}},"positive":{"sm":{"bg":"green.200"}}},"tone_md":{"negative":{"md":{"bg":"red.200"}},"positive":{"md":{"bg":"green.200"}}},"tone_lg":{"negative":{"lg":{"bg":"red.200"}},"positive":{"lg":{"bg":"green.200"}}},"tone_xl":{"negative":{"xl":{"bg":"red.200"}},"positive":{"xl":{"bg":"green.200"}}},"tone_xxl":{"negative":{"xxl":{"bg":"red.200"}},"positive":{"xxl":{"bg":"green.200"}}}},
             },
           });
 
@@ -154,76 +85,7 @@ describe('parser', () => {
               // background: crv('nope'),
             },
             variants: {
-              ...{
-                  "visible": {
-                    "true": {
-                      "opacity": 1
-                    },
-                    "false": {
-                      "opacity": 0
-                    }
-                  },
-                  "visible_sm": {
-                    "true": {
-                      "sm": {
-                        "opacity": 1
-                      }
-                    },
-                    "false": {
-                      "sm": {
-                        "opacity": 0
-                      }
-                    }
-                  },
-                  "visible_md": {
-                    "true": {
-                      "md": {
-                        "opacity": 1
-                      }
-                    },
-                    "false": {
-                      "md": {
-                        "opacity": 0
-                      }
-                    }
-                  },
-                  "visible_lg": {
-                    "true": {
-                      "lg": {
-                        "opacity": 1
-                      }
-                    },
-                    "false": {
-                      "lg": {
-                        "opacity": 0
-                      }
-                    }
-                  },
-                  "visible_xl": {
-                    "true": {
-                      "xl": {
-                        "opacity": 1
-                      }
-                    },
-                    "false": {
-                      "xl": {
-                        "opacity": 0
-                      }
-                    }
-                  },
-                  "visible_xxl": {
-                    "true": {
-                      "xxl": {
-                        "opacity": 1
-                      }
-                    },
-                    "false": {
-                      "xxl": {
-                        "opacity": 0
-                      }
-                    }
-                  }
-                },
+              ...{"visible":{"true":{"opacity":1},"false":{"opacity":0}},"visible_sm":{"true":{"sm":{"opacity":1}},"false":{"sm":{"opacity":0}}},"visible_md":{"true":{"md":{"opacity":1}},"false":{"md":{"opacity":0}}},"visible_lg":{"true":{"lg":{"opacity":1}},"false":{"lg":{"opacity":0}}},"visible_xl":{"true":{"xl":{"opacity":1}},"false":{"xl":{"opacity":0}}},"visible_xxl":{"true":{"xxl":{"opacity":1}},"false":{"xxl":{"opacity":0}}}},
             },
           });
           "
@@ -257,104 +119,7 @@ describe('parser', () => {
               // background: crv('size', { foo: { bg: 'red'}}),
             },
             variants: {
-              ...{
-                  "tone": {
-                    "neutral": {
-                      "bg": "gray.200"
-                    },
-                    "negative": {
-                      "bg": "red.200"
-                    },
-                    "positive": {
-                      "bg": "green.200"
-                    }
-                  },
-                  "tone_sm": {
-                    "neutral": {
-                      "sm": {
-                        "bg": "gray.200"
-                      }
-                    },
-                    "negative": {
-                      "sm": {
-                        "bg": "red.200"
-                      }
-                    },
-                    "positive": {
-                      "sm": {
-                        "bg": "green.200"
-                      }
-                    }
-                  },
-                  "tone_md": {
-                    "neutral": {
-                      "md": {
-                        "bg": "gray.200"
-                      }
-                    },
-                    "negative": {
-                      "md": {
-                        "bg": "red.200"
-                      }
-                    },
-                    "positive": {
-                      "md": {
-                        "bg": "green.200"
-                      }
-                    }
-                  },
-                  "tone_lg": {
-                    "neutral": {
-                      "lg": {
-                        "bg": "gray.200"
-                      }
-                    },
-                    "negative": {
-                      "lg": {
-                        "bg": "red.200"
-                      }
-                    },
-                    "positive": {
-                      "lg": {
-                        "bg": "green.200"
-                      }
-                    }
-                  },
-                  "tone_xl": {
-                    "neutral": {
-                      "xl": {
-                        "bg": "gray.200"
-                      }
-                    },
-                    "negative": {
-                      "xl": {
-                        "bg": "red.200"
-                      }
-                    },
-                    "positive": {
-                      "xl": {
-                        "bg": "green.200"
-                      }
-                    }
-                  },
-                  "tone_xxl": {
-                    "neutral": {
-                      "xxl": {
-                        "bg": "gray.200"
-                      }
-                    },
-                    "negative": {
-                      "xxl": {
-                        "bg": "red.200"
-                      }
-                    },
-                    "positive": {
-                      "xxl": {
-                        "bg": "green.200"
-                      }
-                    }
-                  }
-                },
+              ...{"tone":{"neutral":{"bg":"gray.200"},"negative":{"bg":"red.200"},"positive":{"bg":"green.200"}},"tone_sm":{"neutral":{"sm":{"bg":"gray.200"}},"negative":{"sm":{"bg":"red.200"}},"positive":{"sm":{"bg":"green.200"}}},"tone_md":{"neutral":{"md":{"bg":"gray.200"}},"negative":{"md":{"bg":"red.200"}},"positive":{"md":{"bg":"green.200"}}},"tone_lg":{"neutral":{"lg":{"bg":"gray.200"}},"negative":{"lg":{"bg":"red.200"}},"positive":{"lg":{"bg":"green.200"}}},"tone_xl":{"neutral":{"xl":{"bg":"gray.200"}},"negative":{"xl":{"bg":"red.200"}},"positive":{"xl":{"bg":"green.200"}}},"tone_xxl":{"neutral":{"xxl":{"bg":"gray.200"}},"negative":{"xxl":{"bg":"red.200"}},"positive":{"xxl":{"bg":"green.200"}}}},
             }
           });
           "
@@ -383,21 +148,14 @@ describe('parser', () => {
               // background: crv('size', { foo: { bg: 'red' }}),
             },
             variants: {
-              ...{
-                  "tone": {},
-                  "tone_sm": {},
-                  "tone_md": {},
-                  "tone_lg": {},
-                  "tone_xl": {},
-                  "tone_xxl": {}
-                },
+              ...{"tone":{},"tone_sm":{},"tone_md":{},"tone_lg":{},"tone_xl":{},"tone_xxl":{}},
             }
           });
           "
     `);
   });
 
-  it('skips without ct imports or expressions', () => {
+  it('skips without crv imports or expressions', () => {
     expect(
       makeParser(`<div className={css({ bg: crv("test", {}) })/>`),
     ).toBeUndefined();
@@ -405,5 +163,28 @@ describe('parser', () => {
     expect(
       makeParser(`import { crv } from '@/styled-system/css`),
     ).toBeUndefined();
+  });
+
+  it('skips without crv return value', () => {
+    expect(
+      makeParser(`
+        import { crv, cva } from '@/styled-system/css';
+
+        const styles = cva({
+          variants: {
+            ...crv('', {}),
+          }
+        });
+      `),
+    ).toMatchInlineSnapshot(`
+      "import { crv, cva } from '@/styled-system/css';
+
+              const styles = cva({
+                variants: {
+                  ...crv('', {}),
+                }
+              });
+            "
+    `);
   });
 });

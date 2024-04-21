@@ -38,7 +38,9 @@ export const parser = (
     const prop = node.getArguments()[0]?.getText().replace(/['"]/g, '');
     const styles = node.getArguments()[1]?.getText() ?? '{}';
     const value = crv(prop, json5.parse(styles), context.breakpoints);
-    node.replaceWithText(JSON.stringify(value, null, 2));
+
+    if (!value) continue;
+    node.replaceWithText(JSON.stringify(value));
   }
 
   context.debug?.(

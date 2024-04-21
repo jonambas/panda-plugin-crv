@@ -30,6 +30,8 @@ describe('codegen', () => {
               "code": "
       const crvBreakpoints = ['sm', 'md', 'lg', 'xl', 'xxl'];
       export const crv = (name, styles) => {
+        if (!name) return;
+
         const variants = {
           [name]: styles,
         };
@@ -58,6 +60,7 @@ describe('codegen', () => {
         let variants = { [name]: base };
 
         for (const bp of crvBreakpoints) {
+          if (!(bp in rest)) continue;
           variants[\`\${name}_\${bp}\`] = rest[bp];
         }
 
@@ -71,11 +74,26 @@ describe('codegen', () => {
 
       type CrvBreakpoints = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
+      /**
+       * Create responsive variants
+       *
+       * @example
+       * cva({
+       *  variants: {
+       *    ...crv('prop', {
+       *      variant1: { color: 'red' },
+       *      variant2: { color: 'blue' }
+       *    })
+       * })
+       */
       export declare const crv: <T extends string, P extends Record<any, SystemStyleObject>>(
         name: T,
         styles: P
       ) => Record<\`\${T}_\${CrvBreakpoints}\` | T, P>;
 
+      /**
+       * Splits responsive objects into \`crv\` variants
+       */
       export declare const splitCrv: <T extends string>(
         name: T,
         value: any
