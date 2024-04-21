@@ -1,12 +1,10 @@
-import { Mock, MockInstance } from 'vitest';
-import * as module from '..';
+import type { Mock } from 'vitest';
+import { pluginResponsiveVariants } from '..';
 import { codegen } from '../codegen';
 import { parser } from '../parser';
 
 vi.mock('../codegen');
 vi.mock('../parser');
-
-const { pluginResponsiveVariants } = module;
 
 describe('pluginResponsiveVariants', () => {
   beforeEach(() => {
