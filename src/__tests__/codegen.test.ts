@@ -51,7 +51,7 @@ describe('codegen', () => {
         return variants;
       };
 
-      export const splitCrv = (name, value) => {
+      export const splitResponsiveVariant = (name, value) => {
         if (typeof value !== 'object') {
           return { [name]: value };
         }
@@ -65,7 +65,10 @@ describe('codegen', () => {
         }
 
         return variants;
-      };",
+      };
+
+      export const splitCrv = splitResponsiveVariant;
+      ",
               "file": "crv.mjs",
             },
             {
@@ -94,10 +97,13 @@ describe('codegen', () => {
       /**
        * Splits responsive objects into \`crv\` variants
        */
-      export declare const splitCrv: <T extends string>(
+      type SplitResponsiveVariant = <T extends string>(
         name: T,
         value: any
       ) => Record<\`\${T}_\${CrvBreakpoints}\` | T, any>;
+
+      export declare const splitCrv: SplitResponsiveVariant;
+      export declare const splitResponsiveVariant: SplitResponsiveVariant;
 
       export type ResponsiveVariant<T> = Partial<Record<'base' | CrvBreakpoints, T>> | T;",
               "file": "crv.d.ts",
