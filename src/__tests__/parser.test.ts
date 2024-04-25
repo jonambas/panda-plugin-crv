@@ -24,7 +24,7 @@ describe('parsers', () => {
       },
       variants: {
         ...crv('tone', {
-          negative: { bg: "red.200" },
+          negative: { bg: "red.200", srOnly: true, opacity: 0 },
           "positive": { bg: "green.200" }
         }),
         ...crv('size', {
@@ -52,7 +52,7 @@ describe('parsers', () => {
               // background: crv('nope'),
             },
             variants: {
-              ...{"tone":{"negative":{"bg":"red.200"},"positive":{"bg":"green.200"}},"tone_sm":{"negative":{"sm":{"bg":"red.200"}},"positive":{"sm":{"bg":"green.200"}}},"tone_md":{"negative":{"md":{"bg":"red.200"}},"positive":{"md":{"bg":"green.200"}}},"tone_lg":{"negative":{"lg":{"bg":"red.200"}},"positive":{"lg":{"bg":"green.200"}}},"tone_xl":{"negative":{"xl":{"bg":"red.200"}},"positive":{"xl":{"bg":"green.200"}}},"tone_xxl":{"negative":{"xxl":{"bg":"red.200"}},"positive":{"xxl":{"bg":"green.200"}}}},
+              ...{"tone":{"negative":{"bg":"red.200","srOnly":true,"opacity":0},"positive":{"bg":"green.200"}},"tone_sm":{"negative":{"sm":{"bg":"red.200","srOnly":true,"opacity":0}},"positive":{"sm":{"bg":"green.200"}}},"tone_md":{"negative":{"md":{"bg":"red.200","srOnly":true,"opacity":0}},"positive":{"md":{"bg":"green.200"}}},"tone_lg":{"negative":{"lg":{"bg":"red.200","srOnly":true,"opacity":0}},"positive":{"lg":{"bg":"green.200"}}},"tone_xl":{"negative":{"xl":{"bg":"red.200","srOnly":true,"opacity":0}},"positive":{"xl":{"bg":"green.200"}}},"tone_xxl":{"negative":{"xxl":{"bg":"red.200","srOnly":true,"opacity":0}},"positive":{"xxl":{"bg":"green.200"}}}},
               ...{"size":{"sm":{"p":"4"},"lg":{"p":"5"}},"size_sm":{"sm":{"sm":{"p":"4"}},"lg":{"sm":{"p":"5"}}},"size_md":{"sm":{"md":{"p":"4"}},"lg":{"md":{"p":"5"}}},"size_lg":{"sm":{"lg":{"p":"4"}},"lg":{"lg":{"p":"5"}}},"size_xl":{"sm":{"xl":{"p":"4"}},"lg":{"xl":{"p":"5"}}},"size_xxl":{"sm":{"xxl":{"p":"4"}},"lg":{"xxl":{"p":"5"}}}},
             },
             compoundVariants: [

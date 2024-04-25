@@ -1,8 +1,33 @@
 import type { ParserResultBeforeHookArgs } from '@pandacss/types';
-import { SourceFile, ts } from 'ts-morph';
-import json5 from 'json5';
+import { ObjectLiteralExpression, SourceFile, ts } from 'ts-morph';
 import { crv } from './crv';
 import type { PluginContext } from './types';
+
+export const makeObject = (node: ObjectLiteralExpression) => {
+  if (!node?.getProperties().length) return {};
+
+  const obj: Record<string, any> = {};
+
+  for (const prop of node.getProperties()) {
+    if (prop.isKind(ts.SyntaxKind.PropertyAssignment)) {
+      const initializer = prop.getInitializer();
+      const nameNode = prop.getNameNode();
+
+      const name = nameNode.isKind(ts.SyntaxKind.StringLiteral)
+        ? nameNode.getLiteralText()
+        : prop.getName();
+
+      const value = initializer?.isKind(ts.SyntaxKind.ObjectLiteralExpression)
+        ? makeObject(initializer)
+        : initializer?.isKind(ts.SyntaxKind.StringLiteral)
+          ? initializer.getLiteralText()
+          : JSON.parse(initializer?.getText() ?? '{}'); // try to parse everything else
+
+      obj[name] = value;
+    }
+  }
+  return obj;
+};
 
 export const crvParser = (
   args: ParserResultBeforeHookArgs,
@@ -32,8 +57,8 @@ export const crvParser = (
 
   for (const node of calls) {
     const prop = node.getArguments()[0]?.getText().replace(/['"]/g, '');
-    const styles = node.getArguments()[1]?.getText() ?? '{}';
-    const value = crv(prop, json5.parse(styles), context.breakpoints);
+    const styleArg = node.getArguments()[1] as ObjectLiteralExpression;
+    const value = crv(prop, makeObject(styleArg), context.breakpoints);
 
     if (!value) continue;
     node.replaceWithText(JSON.stringify(value));

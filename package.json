@@ -43,7 +43,6 @@
     "e2e": "playwright test --ui"
   },
   "dependencies": {
-    "json5": "2.2.3",
     "ts-morph": "22.0.0"
   },
   "devDependencies": {

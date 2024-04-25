@@ -1,10 +1,8 @@
 import type { ParserResultBeforeHookArgs } from '@pandacss/types';
-import { SourceFile, ts } from 'ts-morph';
-import json5 from 'json5';
+import { ObjectLiteralExpression, SourceFile, ts } from 'ts-morph';
 import type { PluginContext } from './types';
 import { ccv } from './ccv';
-
-// TODO optimize this
+import { makeObject } from './crvParser';
 
 export const ccvParser = (
   args: ParserResultBeforeHookArgs,
@@ -38,11 +36,11 @@ export const ccvParser = (
 
     if (!call) continue;
 
-    const variants = call.getArguments()[0]?.getText() ?? '{}';
-    const styles = call.getArguments()[1]?.getText() ?? '{}';
+    const variants = call.getArguments()[0] as ObjectLiteralExpression;
+    const styles = call.getArguments()[1] as ObjectLiteralExpression;
     const value = ccv(
-      json5.parse(variants),
-      json5.parse(styles),
+      makeObject(variants),
+      makeObject(styles),
       context.breakpoints,
     );
 
