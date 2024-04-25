@@ -81,8 +81,6 @@ export const splitCrv = splitResponsiveVariant;
 ${ccvFunc}
 `;
 
-export const crvCompoundFunc = () => ``;
-
 export const crvFuncDts = (breakpoints: string[]) => `/* eslint-disable */
 import type { SystemStyleObject } from '../types/system-types';
 
