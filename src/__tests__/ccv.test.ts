@@ -23,35 +23,45 @@ describe('ccv', () => {
         },
         {
           "css": {
-            "bg": "green",
+            "bg": {
+              "sm": "green",
+            },
           },
           "variant1_sm": "red",
           "variant2_sm": "blue",
         },
         {
           "css": {
-            "bg": "green",
+            "bg": {
+              "md": "green",
+            },
           },
           "variant1_md": "red",
           "variant2_md": "blue",
         },
         {
           "css": {
-            "bg": "green",
+            "bg": {
+              "lg": "green",
+            },
           },
           "variant1_lg": "red",
           "variant2_lg": "blue",
         },
         {
           "css": {
-            "bg": "green",
+            "bg": {
+              "xl": "green",
+            },
           },
           "variant1_xl": "red",
           "variant2_xl": "blue",
         },
         {
           "css": {
-            "bg": "green",
+            "bg": {
+              "xxl": "green",
+            },
           },
           "variant1_xxl": "red",
           "variant2_xxl": "blue",

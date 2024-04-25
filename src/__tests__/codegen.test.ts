@@ -74,35 +74,42 @@ describe('codegen', () => {
 
       export const splitCrv = splitResponsiveVariant;
 
-      const renameKeys = (variants) => {
-        const result = [];
+      const makeCompoundVariants = (variants) => {
+        const result = {}; // todo
 
         for (const bp of crvBreakpoints) {
           let renamed = {};
           for (const [key, value] of Object.entries(variants)) {
             renamed[makeKey(key, bp)] = value;
           }
-          result.push(renamed);
+          result[bp] = renamed;
         }
         return result;
       };
 
-      export const ccv = (variants, styles) => {
-        if (!variants) return styles;
+      const injectBreakpoint = (styles, breakpoint) => {
+        let value = {};
+        for (const key of Object.keys(styles)) {
+          value = {
+            ...value,
+            [key]: { [breakpoint]: styles[key] },
+          };
+        }
+        return value;
+      };
 
-        const compoundVariants = [{ ...variants, css: styles }];
-        const variantKeys = renameKeys(variants);
+      export const ccv = (variants, css) => {
+        if (!variants) return [];
 
-        for (const keys of variantKeys) {
-          compoundVariants.push({
-            ...keys,
-            css: styles,
-          });
+        const compoundVariants = [{ ...variants, css }];
+        const grouped = makeCompoundVariants(variants);
+
+        for (const [bp, keys] of Object.entries(grouped)) {
+          compoundVariants.push({ ...keys, css: injectBreakpoint(css, bp)});
         }
 
         return compoundVariants;
       };
-
       ",
               "file": "crv.mjs",
             },
@@ -140,7 +147,33 @@ describe('codegen', () => {
       export declare const splitCrv: SplitResponsiveVariant;
       export declare const splitResponsiveVariant: SplitResponsiveVariant;
 
-      export type ResponsiveVariant<T> = Partial<Record<'base' | CrvBreakpoints, T>> | T;",
+      export type ResponsiveVariant<T> = Partial<Record<'base' | CrvBreakpoints, T>> | T;
+
+      /**
+       * Create compound variants
+       *
+       * @example
+       * variants: {
+       *   crv({
+       *    variants: {
+       *      ...crv('prop', {
+       *        variant1: { color: 'red' },
+       *        variant2: { color: 'blue' }
+       *      })
+       *   })
+       * },
+       * compoundVariants: [
+       *  ...ccv(
+       *    { variant1: 'red', variant2: 'blue' },
+       *    { bg: 'green' }
+       *   )
+       * ]
+       */
+      export declare const ccv: <T extends Record<any, any>, P extends SystemStyleObject>(
+        variants: T,
+        css: P
+      ) => Array<{ css: P } & Record<keyof T, any>>;
+      ",
               "file": "crv.d.ts",
             },
           ],

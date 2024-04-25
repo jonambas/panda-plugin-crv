@@ -1,4 +1,4 @@
-import { ccvFunc } from './ccv';
+import { ccvDts, ccvFunc } from './ccv';
 
 export type Key<T extends string, B extends string> = `${T}_${B}`;
 
@@ -20,6 +20,7 @@ export const crv = <T extends string, P extends Record<any, any>>(
   for (const bp of breakpoints) {
     let value = {};
 
+    // todo share this func
     for (const key of Object.keys(styles)) {
       value = {
         ...value,
@@ -114,4 +115,5 @@ type SplitResponsiveVariant = <T extends string>(
 export declare const splitCrv: SplitResponsiveVariant;
 export declare const splitResponsiveVariant: SplitResponsiveVariant;
 
-export type ResponsiveVariant<T> = Partial<Record<'base' | CrvBreakpoints, T>> | T;`;
+export type ResponsiveVariant<T> = Partial<Record<'base' | CrvBreakpoints, T>> | T;
+${ccvDts}`;
