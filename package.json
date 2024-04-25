@@ -1,6 +1,6 @@
 {
   "name": "panda-plugin-crv",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A Panda CSS plugin for responsive variants",
   "author": "Jon Ambas <jon@jonambas.com>",
   "license": "MIT",
