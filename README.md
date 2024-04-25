@@ -82,7 +82,7 @@ Using your component will look like this:
 
 ### Compound Variants
 
-This plugin supports responsive compound variants, through `ccv` function. Note: this can produce a large amount of compound variants. Make sure your unused CSS is purged properly.
+This plugin supports responsive compound variants, through the `ccv` function. Note: this can produce a large amount of compound variants. Make sure your unused CSS is purged properly.
 
 ```tsx
 import { ccv, crv, cva } from '@/styled-system/css';
