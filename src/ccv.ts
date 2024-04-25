@@ -1,13 +1,13 @@
-import { Key, makeKey } from './crv';
+import { injectBreakpoint, makeKey } from './crv';
 
-export const makeCompoundVariants = <
+export const groupByBreakpoint = <
   T extends Record<string, any>,
   B extends string[],
 >(
   variants: T,
   breakpoints: B,
 ) => {
-  const result: Record<any, any> = {}; // todo
+  const result: Record<any, any> = {}; // todo: narrow types
 
   for (const bp of breakpoints) {
     let renamed: Record<any, any> = {};
@@ -16,18 +16,7 @@ export const makeCompoundVariants = <
     }
     result[bp] = renamed;
   }
-  return result;
-};
-
-const injectBreakpoint = (styles: Record<any, any>, breakpoint: string) => {
-  let value = {};
-  for (const key of Object.keys(styles)) {
-    value = {
-      ...value,
-      [key]: { [breakpoint]: styles[key] },
-    };
-  }
-  return value;
+  return Object.entries(result);
 };
 
 export const ccv = <T extends Record<any, any>, C extends Record<any, any>>(
@@ -35,15 +24,13 @@ export const ccv = <T extends Record<any, any>, C extends Record<any, any>>(
   css: C,
   breakpoints: string[],
 ) => {
-  if (!variants) return [];
+  if (!variants || !css) return [];
 
   const compoundVariants = [{ ...variants, css }] as Array<{
-    [K: string]: any; // todo
+    [K: string]: any; // todo: narrow types
   }>;
 
-  const grouped = makeCompoundVariants(variants, breakpoints);
-
-  for (const [bp, keys] of Object.entries(grouped)) {
+  for (const [bp, keys] of groupByBreakpoint(variants, breakpoints)) {
     compoundVariants.push({
       ...keys,
       css: injectBreakpoint(css, bp),
@@ -54,8 +41,8 @@ export const ccv = <T extends Record<any, any>, C extends Record<any, any>>(
 };
 
 export const ccvFunc = `
-const makeCompoundVariants = (variants) => {
-  const result = {}; // todo
+const groupByBreakpoint = (variants) => {
+  const result = {};
 
   for (const bp of crvBreakpoints) {
     let renamed = {};
@@ -64,27 +51,15 @@ const makeCompoundVariants = (variants) => {
     }
     result[bp] = renamed;
   }
-  return result;
-};
-
-const injectBreakpoint = (styles, breakpoint) => {
-  let value = {};
-  for (const key of Object.keys(styles)) {
-    value = {
-      ...value,
-      [key]: { [breakpoint]: styles[key] },
-    };
-  }
-  return value;
+  return Object.entries(result);
 };
 
 export const ccv = (variants, css) => {
-  if (!variants) return [];
+  if (!variants || !css) return [];
 
   const compoundVariants = [{ ...variants, css }];
-  const grouped = makeCompoundVariants(variants);
 
-  for (const [bp, keys] of Object.entries(grouped)) {
+  for (const [bp, keys] of groupByBreakpoint(variants)) {
     compoundVariants.push({ ...keys, css: injectBreakpoint(css, bp)});
   }
 

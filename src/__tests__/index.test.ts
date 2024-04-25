@@ -1,10 +1,10 @@
 import type { Mock } from 'vitest';
 import { pluginResponsiveVariants } from '..';
 import { codegen } from '../codegen';
-import { parser } from '../parser';
+import { parsers } from '../parsers';
 
 vi.mock('../codegen');
-vi.mock('../parser');
+vi.mock('../parsers');
 
 describe('pluginResponsiveVariants', () => {
   beforeEach(() => {
@@ -23,10 +23,10 @@ describe('pluginResponsiveVariants', () => {
     expect(codegen).toHaveBeenCalledTimes(1);
   });
 
-  it('ca;;s parser', () => {
+  it('calls parser', () => {
     const parse = pluginResponsiveVariants().hooks?.['parser:before']!;
     parse({ content: '', configure: vi.fn(), filePath: 'test.tsx' });
-    expect(parser).toHaveBeenCalledTimes(1);
+    expect(parsers).toHaveBeenCalledTimes(1);
   });
 
   it('sets context', () => {

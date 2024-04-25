@@ -34,6 +34,12 @@ describe('codegen', () => {
         return \`\${name}_\${bp}\`;
       }
 
+      const injectBreakpoint = (styles, breakpoint) => {
+        return Object.fromEntries(
+          Object.entries(styles).map(([key, css]) => [[key], { [breakpoint]: css }]),
+        );
+      };
+
       export const crv = (name, styles) => {
         if (!name) return;
 
@@ -42,15 +48,7 @@ describe('codegen', () => {
         };
 
         for (const bp of crvBreakpoints) {
-          let value = {};
-
-          for (const key of Object.keys(styles)) {
-            value = {
-              ...value,
-              [key]: { [bp]: styles[key] },
-            };
-          }
-          variants[makeKey(name, bp)] = value;
+          variants[makeKey(name, bp)] = injectBreakpoint(styles, bp);
         }
 
         return variants;
@@ -66,7 +64,7 @@ describe('codegen', () => {
 
         for (const bp of crvBreakpoints) {
           if (!(bp in rest)) continue;
-          variants[\`\${name}_\${bp}\`] = rest[bp];
+          variants[makeKey(name, bp)] = rest[bp];
         }
 
         return variants;
@@ -74,8 +72,9 @@ describe('codegen', () => {
 
       export const splitCrv = splitResponsiveVariant;
 
-      const makeCompoundVariants = (variants) => {
-        const result = {}; // todo
+
+      const groupByBreakpoint = (variants) => {
+        const result = {};
 
         for (const bp of crvBreakpoints) {
           let renamed = {};
@@ -84,27 +83,15 @@ describe('codegen', () => {
           }
           result[bp] = renamed;
         }
-        return result;
-      };
-
-      const injectBreakpoint = (styles, breakpoint) => {
-        let value = {};
-        for (const key of Object.keys(styles)) {
-          value = {
-            ...value,
-            [key]: { [breakpoint]: styles[key] },
-          };
-        }
-        return value;
+        return Object.entries(result);
       };
 
       export const ccv = (variants, css) => {
-        if (!variants) return [];
+        if (!variants || !css) return [];
 
         const compoundVariants = [{ ...variants, css }];
-        const grouped = makeCompoundVariants(variants);
 
-        for (const [bp, keys] of Object.entries(grouped)) {
+        for (const [bp, keys] of groupByBreakpoint(variants)) {
           compoundVariants.push({ ...keys, css: injectBreakpoint(css, bp)});
         }
 
@@ -174,6 +161,7 @@ describe('codegen', () => {
         variants: T,
         css: P
       ) => Array<{ css: P } & Record<keyof T, any>>;
+
       ",
               "file": "crv.d.ts",
             },

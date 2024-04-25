@@ -1,11 +1,22 @@
 import { ccvDts, ccvFunc } from './ccv';
 
+// Utilities
 export type Key<T extends string, B extends string> = `${T}_${B}`;
 
 export const makeKey = <T extends string, B extends string>(name: T, bp: B) => {
   return `${name}_${bp}` as Key<T, B>;
 };
 
+export const injectBreakpoint = (
+  styles: Record<any, any>,
+  breakpoint: string,
+) => {
+  return Object.fromEntries(
+    Object.entries(styles).map(([key, css]) => [[key], { [breakpoint]: css }]),
+  );
+};
+
+// Parser side crv function
 export const crv = <T extends string, P extends Record<any, any>>(
   name: T,
   styles: P,
@@ -18,16 +29,7 @@ export const crv = <T extends string, P extends Record<any, any>>(
   } as Record<T | `${T}_${(typeof breakpoints)[number]}`, any>;
 
   for (const bp of breakpoints) {
-    let value = {};
-
-    // todo share this func
-    for (const key of Object.keys(styles)) {
-      value = {
-        ...value,
-        [key]: { [bp]: styles[key] },
-      };
-    }
-    variants[makeKey(name, bp)] = value;
+    variants[makeKey(name, bp)] = injectBreakpoint(styles, bp);
   }
 
   return variants;
@@ -40,6 +42,12 @@ const makeKey = (name, bp) => {
   return \`\${name}_\${bp}\`;
 }
 
+const injectBreakpoint = (styles, breakpoint) => {
+  return Object.fromEntries(
+    Object.entries(styles).map(([key, css]) => [[key], { [breakpoint]: css }]),
+  );
+};
+
 export const crv = (name, styles) => {
   if (!name) return;
 
@@ -48,15 +56,7 @@ export const crv = (name, styles) => {
   };
 
   for (const bp of crvBreakpoints) {
-    let value = {};
-
-    for (const key of Object.keys(styles)) {
-      value = {
-        ...value,
-        [key]: { [bp]: styles[key] },
-      };
-    }
-    variants[makeKey(name, bp)] = value;
+    variants[makeKey(name, bp)] = injectBreakpoint(styles, bp);
   }
 
   return variants;
@@ -72,13 +72,14 @@ export const splitResponsiveVariant = (name, value) => {
 
   for (const bp of crvBreakpoints) {
     if (!(bp in rest)) continue;
-    variants[\`\${name}_\${bp}\`] = rest[bp];
+    variants[makeKey(name, bp)] = rest[bp];
   }
 
   return variants;
 };
 
 export const splitCrv = splitResponsiveVariant;
+
 ${ccvFunc}
 `;
 
@@ -117,4 +118,5 @@ export declare const splitResponsiveVariant: SplitResponsiveVariant;
 
 export type ResponsiveVariant<T> = Partial<Record<'base' | CrvBreakpoints, T>> | T;
 
-${ccvDts}`;
+${ccvDts}
+`;

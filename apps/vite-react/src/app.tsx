@@ -39,10 +39,8 @@ const recipe = cva({
   },
   compoundVariants: [
     ...ccv({ tone: 'neutral', test: 'foo' }, { bg: 'amber.400' }),
+    ...ccv({ tone: 'negative', test: 'bar' }, { bg: 'indigo.500' }),
   ],
-  // compoundVariants: [
-  //   {"tone":"neutral","test":"foo","css":{"bg":"amber.400"}},{"tone_sm":"neutral","test_sm":"foo","css":{"bg":{"sm":"amber.400"}}},{"tone_md":"neutral","test_md":"foo","css":{"bg":{"md":"amber.400"}}},{"tone_lg":"neutral","test_lg":"foo","css":{"bg":{"lg":"amber.400"}}},{"tone_xl":"neutral","test_xl":"foo","css":{"bg":{"xl":"amber.400"}}},{"tone_2xl":"neutral","test_2xl":"foo","css":{"bg":{"2xl":"amber.400"}}},{"tone_verybig":"neutral","test_verybig":"foo","css":{"bg":{"verybig":"amber.400"}}},
-  // ],
 });
 
 const Component: FC<
@@ -56,11 +54,7 @@ const Component: FC<
   const splitTone = splitCrv('tone', tone);
   const splitVisible = splitResponsiveVariant('visible', visible);
   const splitTest = splitResponsiveVariant('test', test);
-  console.log(JSON.stringify(splitTest));
-  console.log(JSON.stringify(splitTone));
-  console.log(
-    JSON.stringify(ccv({ tone: 'neutral', test: 'foo' }, { bg: 'amber.400' })),
-  );
+
   return (
     <div
       className={cx(recipe({ ...splitTone, ...splitVisible, ...splitTest }))}

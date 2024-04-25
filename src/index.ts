@@ -1,5 +1,5 @@
 import type { PandaPlugin } from '@pandacss/types';
-import { parser } from './parser';
+import { parsers } from './parsers';
 import { codegen } from './codegen';
 import { createContext } from './context';
 
@@ -20,7 +20,7 @@ const pluginResponsiveVariants = (): PandaPlugin => {
         );
       },
       'parser:before': (args) => {
-        return parser(args, context);
+        return parsers(args, context);
       },
       'codegen:prepare': (args) => {
         return codegen(args, context);
