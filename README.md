@@ -83,4 +83,5 @@ Using your component will look like this:
 ### Current Limitations
 
 - The plugin generates variants for all breakpoints defined in your theme, and does not include Panda's generated breakpoints, such as `mdDown`, `mdOnly`, `mdToLg`.
-- There is currently no way to limit which breakpoints you wish to generate.
+- Responsive variants won't be compatible with compound variants.
+- There is currently no way to limit or pick which breakpoints you wish to generate.
