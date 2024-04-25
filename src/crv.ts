@@ -1,3 +1,11 @@
+import { ccvFunc } from './ccv';
+
+export type Key<T extends string, B extends string> = `${T}_${B}`;
+
+export const makeKey = <T extends string, B extends string>(name: T, bp: B) => {
+  return `${name}_${bp}` as Key<T, B>;
+};
+
 export const crv = <T extends string, P extends Record<any, any>>(
   name: T,
   styles: P,
@@ -18,7 +26,7 @@ export const crv = <T extends string, P extends Record<any, any>>(
         [key]: { [bp]: styles[key] },
       };
     }
-    variants[`${name}_${bp}`] = value;
+    variants[makeKey(name, bp)] = value;
   }
 
   return variants;
@@ -26,6 +34,11 @@ export const crv = <T extends string, P extends Record<any, any>>(
 
 export const crvFunc = (breakpoints: string[]) => `
 const crvBreakpoints = [${breakpoints.map((bp) => `'${bp}'`).join(', ')}];
+
+const makeKey = (name, bp) => {
+  return \`\${name}_\${bp}\`;
+}
+
 export const crv = (name, styles) => {
   if (!name) return;
 
@@ -42,7 +55,7 @@ export const crv = (name, styles) => {
         [key]: { [bp]: styles[key] },
       };
     }
-    variants[\`\${name}_\${bp}\`] = value;
+    variants[makeKey(name, bp)] = value;
   }
 
   return variants;
@@ -65,7 +78,10 @@ export const splitResponsiveVariant = (name, value) => {
 };
 
 export const splitCrv = splitResponsiveVariant;
+${ccvFunc}
 `;
+
+export const crvCompoundFunc = () => ``;
 
 export const crvFuncDts = (breakpoints: string[]) => `/* eslint-disable */
 import type { SystemStyleObject } from '../types/system-types';

@@ -29,6 +29,11 @@ describe('codegen', () => {
             {
               "code": "
       const crvBreakpoints = ['sm', 'md', 'lg', 'xl', 'xxl'];
+
+      const makeKey = (name, bp) => {
+        return \`\${name}_\${bp}\`;
+      }
+
       export const crv = (name, styles) => {
         if (!name) return;
 
@@ -45,7 +50,7 @@ describe('codegen', () => {
               [key]: { [bp]: styles[key] },
             };
           }
-          variants[\`\${name}_\${bp}\`] = value;
+          variants[makeKey(name, bp)] = value;
         }
 
         return variants;
@@ -68,6 +73,36 @@ describe('codegen', () => {
       };
 
       export const splitCrv = splitResponsiveVariant;
+
+      const renameKeys = (variants) => {
+        const result = [];
+
+        for (const bp of crvBreakpoints) {
+          let renamed = {};
+          for (const [key, value] of Object.entries(variants)) {
+            renamed[makeKey(key, bp)] = value;
+          }
+          result.push(renamed);
+        }
+        return result;
+      };
+
+      export const ccv = (variants, styles) => {
+        if (!variants) return styles;
+
+        const compoundVariants = [{ ...variants, css: styles }];
+        const variantKeys = renameKeys(variants);
+
+        for (const keys of variantKeys) {
+          compoundVariants.push({
+            ...keys,
+            css: styles,
+          });
+        }
+
+        return compoundVariants;
+      };
+
       ",
               "file": "crv.mjs",
             },
