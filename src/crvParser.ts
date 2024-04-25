@@ -4,7 +4,7 @@ import { crv } from './crv';
 import type { PluginContext } from './types';
 
 export const makeObject = (node: ObjectLiteralExpression) => {
-  if (!node?.getProperties().length) return {};
+  if (!node?.getProperties?.().length) return {};
 
   const obj: Record<string, any> = {};
 

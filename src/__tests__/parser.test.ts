@@ -29,7 +29,7 @@ describe('parsers', () => {
         }),
         ...crv('size', {
           sm: { p: "4" },
-          "lg": { p: "5" }
+          'lg': { p: "5" }
         }),
       },
       compoundVariants: [
