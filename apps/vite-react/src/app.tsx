@@ -17,10 +17,10 @@ const recipe = cva({
     p: 3,
   },
   variants: {
-    test: {
+    ...crv('test', {
       foo: {},
       bar: {},
-    },
+    }),
     ...crv('tone', {
       neutral: {
         bg: 'gray.200',
@@ -40,6 +40,9 @@ const recipe = cva({
   compoundVariants: [
     ...ccv({ tone: 'neutral', test: 'foo' }, { bg: 'amber.400' }),
   ],
+  // compoundVariants: [
+  //   {"tone":"neutral","test":"foo","css":{"bg":"amber.400"}},{"tone_sm":"neutral","test_sm":"foo","css":{"bg":{"sm":"amber.400"}}},{"tone_md":"neutral","test_md":"foo","css":{"bg":{"md":"amber.400"}}},{"tone_lg":"neutral","test_lg":"foo","css":{"bg":{"lg":"amber.400"}}},{"tone_xl":"neutral","test_xl":"foo","css":{"bg":{"xl":"amber.400"}}},{"tone_2xl":"neutral","test_2xl":"foo","css":{"bg":{"2xl":"amber.400"}}},{"tone_verybig":"neutral","test_verybig":"foo","css":{"bg":{"verybig":"amber.400"}}},
+  // ],
 });
 
 const Component: FC<

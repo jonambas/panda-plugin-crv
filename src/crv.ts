@@ -116,4 +116,5 @@ export declare const splitCrv: SplitResponsiveVariant;
 export declare const splitResponsiveVariant: SplitResponsiveVariant;
 
 export type ResponsiveVariant<T> = Partial<Record<'base' | CrvBreakpoints, T>> | T;
+
 ${ccvDts}`;

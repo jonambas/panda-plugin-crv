@@ -38,13 +38,18 @@ export const parser = (
 
   if (!crvExists) return;
 
-  const all = source.getDescendantsOfKind(ts.SyntaxKind.CallExpression);
-  const crvCalls = all.filter(
-    (node) => node.getExpression().getText() === crvAlias,
-  );
-  const ccvCalls = all.filter(
-    (node) => node.getExpression().getText() === ccvAlias,
-  );
+  const crvCalls = source
+    .getDescendantsOfKind(ts.SyntaxKind.CallExpression)
+    .filter((node) => node.getExpression().getText() === crvAlias);
+
+  // Panda issue: spreading does not work in compoundVariants
+  const ccvCalls = source
+    .getDescendantsOfKind(ts.SyntaxKind.SpreadElement)
+    .filter((node) => {
+      console.log('\nccv', JSON.stringify(node.getExpression()?.getText()));
+      console.log(node.getExpression()?.getText().startsWith(ccvAlias));
+      return node.getExpression()?.getText().startsWith(ccvAlias);
+    });
 
   for (const node of crvCalls) {
     const prop = node.getArguments()[0]?.getText().replace(/['"]/g, '');
@@ -56,17 +61,26 @@ export const parser = (
   }
 
   for (const node of ccvCalls) {
-    const variants = node.getArguments()[0]?.getText() ?? '{}';
-    const styles = node.getArguments()[1]?.getText() ?? '{}';
+    const call = node.getExpressionIfKind(ts.SyntaxKind.CallExpression);
+    console.log('\nccv', JSON.stringify(call?.getText()));
+
+    if (!call) continue;
+
+    console.log('\nccv', JSON.stringify(call.getArguments().at(0)?.getText()));
+
+    const variants = call.getArguments()[0]?.getText() ?? '{}';
+    console.log('\nccv', variants);
+    const styles = call.getArguments()[1]?.getText() ?? '{}';
+    console.log('\nccv', styles);
     const value = ccv(
       json5.parse(variants),
       json5.parse(styles),
       context.breakpoints,
     );
 
-    context.debug?.(`plugin:crv`, `${JSON.stringify(value, null, 2)}`);
-
     if (!value) continue;
+    console.log('\nccv', value);
+    // Replace full node with spread
     node.replaceWithText(JSON.stringify(value));
   }
 
@@ -80,5 +94,6 @@ export const parser = (
     `Replaced ${ccvCalls.length} ccv calls in: ${args.filePath.split('/').at(-1)}`,
   );
 
-  return crvCalls.length ? source.getText() : undefined;
+  console.log(source.getText());
+  return source.getText();
 };

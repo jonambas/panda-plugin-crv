@@ -149,6 +149,7 @@ describe('codegen', () => {
 
       export type ResponsiveVariant<T> = Partial<Record<'base' | CrvBreakpoints, T>> | T;
 
+
       /**
        * Create compound variants
        *

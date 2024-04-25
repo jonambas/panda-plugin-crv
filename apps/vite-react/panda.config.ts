@@ -13,5 +13,6 @@ export default defineConfig({
   },
   outdir: 'styled-system',
   logLevel: 'debug',
+  clean: true,
   plugins: [pluginResponsiveVariants()],
 });
