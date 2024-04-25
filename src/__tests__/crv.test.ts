@@ -1,13 +1,21 @@
 import { crv, crvFunc } from '../crv';
 import { breakpoints } from './fixtures';
+import * as fs from 'node:fs';
+
+fs.writeFileSync('_test-crvFunc.mts', crvFunc(Object.keys(breakpoints)));
 
 const {
   splitCrv,
   crv: crvCodegen,
   splitResponsiveVariant,
-} = await import(`data:text/javascript,${crvFunc(Object.keys(breakpoints))}`);
+  // @ts-ignore
+} = await import('_test-crvFunc.mts');
 
 describe('crv', () => {
+  afterAll(() => {
+    fs.unlinkSync('_test-crvFunc.mts');
+  });
+
   it('returns the expected variants', () => {
     const result = crv(
       'prop',

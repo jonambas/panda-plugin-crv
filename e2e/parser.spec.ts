@@ -53,4 +53,32 @@ test.describe('parser', () => {
       '1',
     );
   });
+
+  test('compound variants', async ({ page }) => {
+    await expect(page.getByText('Compound variants').first()).toHaveCSS(
+      'background-color',
+      'rgb(251, 191, 36)',
+    );
+  });
+
+  test('responsive compound variants', async ({ page }) => {
+    await expect(page.getByText('Responsive compound variants')).toHaveCSS(
+      'background-color',
+      'rgb(187, 247, 208)',
+    );
+
+    page.setViewportSize({ width: 768, height: 1024 });
+
+    await expect(page.getByText('Responsive compound variants')).toHaveCSS(
+      'background-color',
+      'rgb(229, 231, 235)',
+    );
+
+    page.setViewportSize({ width: 300, height: 1024 });
+
+    await expect(page.getByText('Responsive compound variants')).toHaveCSS(
+      'background-color',
+      'rgb(99, 102, 241)',
+    );
+  });
 });

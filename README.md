@@ -80,8 +80,55 @@ Using your component will look like this:
 
 ---
 
+### Compound Variants
+
+This plugin supports responsive compound variants, through `ccv` function. Note: this can produce a large amount of compound variants. Make sure your unused CSS is purged properly.
+
+```tsx
+import { ccv, crv, cva } from '@/styled-system/css';
+
+const styles = cva({
+  variants: {
+    ...crv('variant1', {
+      primary: { bg: 'blue.500' },
+      secondary: { bg: 'gray.500' },
+      destructive: { bg: 'red.500' },
+    }),
+    ...crv('variant2', {
+      true: { opacity: 1 },
+      false: { opacity: 0 },
+    }),
+  },
+  compoundVariants: [
+    ...ccv(
+      {
+        variant1: 'primary',
+        variant2: true,
+      },
+      {
+        color: 'green.500',
+      },
+    ),
+  ],
+});
+```
+
+The above code will render `"green.500"` if `variant1` is `"primary"` and if `variant2` is `true`
+
+```tsx
+<Component variant1="primary" variant2>
+// -> opacity_1 bg_blue.500 text_green.500
+
+<Component
+  variant1={{ base: 'secondary', lg: 'primary' }}
+  variant2={{ base: false, lg: true }}
+/>
+// -> opacity_0 lg:opacity_1 lg:bg_blue.500 bg_gray.500 lg:text_green.500
+```
+
+---
+
 ### Current Limitations
 
 - The plugin generates variants for all breakpoints defined in your theme, and does not include Panda's generated breakpoints, such as `mdDown`, `mdOnly`, `mdToLg`.
-- Responsive variants won't be compatible with compound variants.
 - There is currently no way to limit or pick which breakpoints you wish to generate.

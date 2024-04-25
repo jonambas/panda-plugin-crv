@@ -29,6 +29,17 @@ describe('codegen', () => {
             {
               "code": "
       const crvBreakpoints = ['sm', 'md', 'lg', 'xl', 'xxl'];
+
+      const makeKey = (name, bp) => {
+        return \`\${name}_\${bp}\`;
+      }
+
+      const injectBreakpoint = (styles, breakpoint) => {
+        return Object.fromEntries(
+          Object.entries(styles).map(([key, css]) => [[key], { [breakpoint]: css }]),
+        );
+      };
+
       export const crv = (name, styles) => {
         if (!name) return;
 
@@ -37,15 +48,7 @@ describe('codegen', () => {
         };
 
         for (const bp of crvBreakpoints) {
-          let value = {};
-
-          for (const key of Object.keys(styles)) {
-            value = {
-              ...value,
-              [key]: { [bp]: styles[key] },
-            };
-          }
-          variants[\`\${name}_\${bp}\`] = value;
+          variants[makeKey(name, bp)] = injectBreakpoint(styles, bp);
         }
 
         return variants;
@@ -61,13 +64,39 @@ describe('codegen', () => {
 
         for (const bp of crvBreakpoints) {
           if (!(bp in rest)) continue;
-          variants[\`\${name}_\${bp}\`] = rest[bp];
+          variants[makeKey(name, bp)] = rest[bp];
         }
 
         return variants;
       };
 
       export const splitCrv = splitResponsiveVariant;
+
+
+      const groupByBreakpoint = (variants) => {
+        const result = {};
+
+        for (const bp of crvBreakpoints) {
+          let renamed = {};
+          for (const [key, value] of Object.entries(variants)) {
+            renamed[makeKey(key, bp)] = value;
+          }
+          result[bp] = renamed;
+        }
+        return Object.entries(result);
+      };
+
+      export const ccv = (variants, css) => {
+        if (!variants || !css) return [];
+
+        const compoundVariants = [{ ...variants, css }];
+
+        for (const [bp, keys] of groupByBreakpoint(variants)) {
+          compoundVariants.push({ ...keys, css: injectBreakpoint(css, bp)});
+        }
+
+        return compoundVariants;
+      };
       ",
               "file": "crv.mjs",
             },
@@ -105,7 +134,35 @@ describe('codegen', () => {
       export declare const splitCrv: SplitResponsiveVariant;
       export declare const splitResponsiveVariant: SplitResponsiveVariant;
 
-      export type ResponsiveVariant<T> = Partial<Record<'base' | CrvBreakpoints, T>> | T;",
+      export type ResponsiveVariant<T> = Partial<Record<'base' | CrvBreakpoints, T>> | T;
+
+
+      /**
+       * Create compound variants
+       *
+       * @example
+       * variants: {
+       *   crv({
+       *    variants: {
+       *      ...crv('prop', {
+       *        variant1: { color: 'red' },
+       *        variant2: { color: 'blue' }
+       *      })
+       *   })
+       * },
+       * compoundVariants: [
+       *  ...ccv(
+       *    { variant1: 'red', variant2: 'blue' },
+       *    { bg: 'green' }
+       *   )
+       * ]
+       */
+      export declare const ccv: <T extends Record<any, any>, P extends SystemStyleObject>(
+        variants: T,
+        css: P
+      ) => Array<{ css: P } & Record<keyof T, any>>;
+
+      ",
               "file": "crv.d.ts",
             },
           ],

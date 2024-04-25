@@ -43,7 +43,6 @@
     "e2e": "playwright test --ui"
   },
   "dependencies": {
-    "json5": "2.2.3",
     "ts-morph": "22.0.0"
   },
   "devDependencies": {
@@ -51,11 +50,11 @@
     "@pandacss/types": "0.37.2",
     "@playwright/test": "1.43.1",
     "@types/node": "20.12.7",
-    "@vitest/coverage-v8": "1.5.1",
+    "@vitest/coverage-v8": "1.5.2",
     "prettier": "3.2.5",
     "tsup": "8.0.2",
     "typescript": "5.4.5",
-    "vitest": "1.5.1"
+    "vitest": "1.5.2"
   },
   "keywords": [
     "panda",
