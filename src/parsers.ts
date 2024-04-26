@@ -4,22 +4,18 @@ import { crvParser } from './crvParser';
 import { ccvParser } from './ccvParser';
 import type { SourceFile } from 'ts-morph';
 
-const names = ['ccv', 'crv'] as const;
+const names = ['crv', 'ccv'] as const;
 
 const getImports = (source: SourceFile) => {
   const imports: Partial<Record<(typeof names)[number], string>> = {};
 
   for (const node of source.getImportDeclarations()) {
-    let namesExist = false;
-
-    for (const name of names) {
-      if (node.getText().includes(name)) {
-        namesExist = true;
-        break;
-      }
+    if (
+      !node.getText().includes(names[0]) ||
+      !node.getText().includes(names[1])
+    ) {
+      continue;
     }
-
-    if (!namesExist) continue;
 
     for (const named of node.getNamedImports()) {
       for (const name of names) {
@@ -41,7 +37,7 @@ export const parsers = (
   context: PluginContext,
 ) => {
   const { project } = context;
-  let changed: string | undefined = undefined;
+  let changed;
 
   const source = project.createSourceFile('__crv-parser.tsx', args.content, {
     overwrite: true,
@@ -54,7 +50,7 @@ export const parsers = (
   }
 
   if (imports.ccv) {
-    changed ??= ccvParser(args, context, source, imports.ccv);
+    changed = ccvParser(args, context, source, imports.ccv) ?? changed;
   }
 
   if (!changed) return;
