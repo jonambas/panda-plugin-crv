@@ -1,6 +1,7 @@
 import type { ParserResultBeforeHookArgs } from '@pandacss/types';
 import {
   CodeBlockWriter,
+  ObjectLiteralElementLike,
   ObjectLiteralExpression,
   SourceFile,
   ts,
@@ -12,7 +13,7 @@ const clean = (str: string) => str.replace(/^\s+|\s+$|\s+(?=\s)/g, '');
 
 type WriterArgs = {
   writer: CodeBlockWriter;
-  variants: ObjectLiteralExpression;
+  variants: ObjectLiteralElementLike[];
   value: ObjectLiteralExpression;
   bp?: string;
   isLast?: boolean;
@@ -23,7 +24,7 @@ export const writeObject = (args: WriterArgs) => {
 
   writer.write('{');
 
-  for (const property of variants.getProperties()) {
+  for (const property of variants) {
     if (!property.isKind(ts.SyntaxKind.PropertyAssignment)) continue;
     const initializer = property.getInitializer()?.getText() ?? '';
     if (bp) {
@@ -64,15 +65,31 @@ export const ccvParser = (
 
     if (!call) continue;
 
-    const [variants, style] = call.getArguments();
+    // Only one aarg
+    const callArgs = call.getArguments().at(0);
+    if (!callArgs || !callArgs.isKind(ts.SyntaxKind.ObjectLiteralExpression))
+      continue;
+
+    const properties = callArgs.getProperties();
+    let style;
+
+    const variants = properties.filter((prop) => {
+      if (!prop.isKind(ts.SyntaxKind.PropertyAssignment)) return false;
+      return prop.getName() !== 'css';
+    });
+
+    for (const property of properties) {
+      if (!property.isKind(ts.SyntaxKind.PropertyAssignment)) continue;
+      if (property.getName() === 'css') {
+        style = property.getInitializer();
+      }
+    }
 
     if (!style || !style.isKind(ts.SyntaxKind.ObjectLiteralExpression)) {
       continue;
     }
 
     const replaced = node.replaceWithText((writer) => {
-      if (!variants.isKind(ts.SyntaxKind.ObjectLiteralExpression)) return;
-
       writeObject({ writer, variants, value: style });
 
       for (const [i, bp] of breakpoints.entries()) {
