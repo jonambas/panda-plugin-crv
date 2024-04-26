@@ -1,39 +1,12 @@
 import { ccvDts, ccvFunc } from './ccv';
 
 // Utilities
-export type Key<T extends string, B extends string> = `${T}_${B}`;
 
 export const makeKey = <T extends string, B extends string>(name: T, bp: B) => {
-  return `${name}_${bp}` as Key<T, B>;
+  return `${name}_${bp}` as `${T}_${B}`;
 };
 
-export const injectBreakpoint = (
-  styles: Record<any, any>,
-  breakpoint: string,
-) => {
-  return Object.fromEntries(
-    Object.entries(styles).map(([key, css]) => [[key], { [breakpoint]: css }]),
-  );
-};
-
-// Parser side crv function
-export const crv = <T extends string, P extends Record<any, any>>(
-  name: T,
-  styles: P,
-  breakpoints: string[],
-) => {
-  if (!name) return;
-
-  const variants = {
-    [name]: styles,
-  } as Record<T | `${T}_${(typeof breakpoints)[number]}`, any>;
-
-  for (const bp of breakpoints) {
-    variants[makeKey(name, bp)] = injectBreakpoint(styles, bp);
-  }
-
-  return variants;
-};
+// Codegen
 
 export const crvFunc = (breakpoints: string[]) => `
 const crvBreakpoints = [${breakpoints.map((bp) => `'${bp}'`).join(', ')}];

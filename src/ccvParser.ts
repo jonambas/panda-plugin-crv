@@ -1,59 +1,91 @@
 import type { ParserResultBeforeHookArgs } from '@pandacss/types';
-import { ObjectLiteralExpression, SourceFile, ts } from 'ts-morph';
+import {
+  CodeBlockWriter,
+  ObjectLiteralExpression,
+  SourceFile,
+  ts,
+} from 'ts-morph';
 import type { PluginContext } from './types';
-import { ccv } from './ccv';
-import { makeObject } from './crvParser';
+
+const clean = (str: string) => str.replace(/^\s+|\s+$|\s+(?=\s)/g, '');
+
+type WriterArgs = {
+  writer: CodeBlockWriter;
+  variants: ObjectLiteralExpression;
+  value: ObjectLiteralExpression;
+  bp?: string;
+  isLast?: boolean;
+};
+
+export const writeObject = (args: WriterArgs) => {
+  const { writer, variants, value, bp, isLast } = args;
+
+  writer.write('{');
+
+  for (const property of variants.getProperties()) {
+    if (!property.isKind(ts.SyntaxKind.PropertyAssignment)) {
+      continue;
+    }
+    writer.write(`${property.getText()},`);
+  }
+  writer.write('css: {');
+
+  if (bp) writer.write(`'${bp}': {`);
+  for (const variant of value.getProperties()) {
+    writer.write(`${clean(variant.getText())},`);
+  }
+  if (bp) writer.write(`}},`);
+  writer.write(isLast ? '}' : '},');
+};
 
 export const ccvParser = (
   args: ParserResultBeforeHookArgs,
   context: PluginContext,
   source: SourceFile,
+  alias: string = 'ccv',
 ): string | void => {
-  let exists = false;
-  let alias = 'ccv';
-
-  for (const node of source.getImportDeclarations()) {
-    if (!node.getText().includes('ccv')) continue;
-    for (const named of node.getNamedImports()) {
-      if (named.getText() === 'ccv' || named.getText().startsWith('ccv as')) {
-        exists = true;
-        alias = named.getAliasNode()?.getText() ?? 'ccv';
-      }
-    }
-  }
-
-  if (!exists) return;
+  const { breakpoints, debug } = context;
 
   // Panda bug: spreads are not parsed in compoundVariants
-  const calls = source
+  // Target spread elements so that we can replace them later
+  const spreads = source
     .getDescendantsOfKind(ts.SyntaxKind.SpreadElement)
     .filter((node) => node.getExpression()?.getText().startsWith(alias));
 
-  if (!calls.length) return;
+  if (!spreads.length) return;
 
-  for (const node of calls) {
+  for (const node of spreads) {
     const call = node.getExpressionIfKind(ts.SyntaxKind.CallExpression);
 
     if (!call) continue;
 
-    const variants = call.getArguments()[0] as ObjectLiteralExpression;
-    const styles = call.getArguments()[1] as ObjectLiteralExpression;
-    const value = ccv(
-      makeObject(variants),
-      makeObject(styles),
-      context.breakpoints,
+    const [variants, style] = call.getArguments();
+
+    if (!style || !style.isKind(ts.SyntaxKind.ObjectLiteralExpression)) {
+      continue;
+    }
+
+    const replaced = node.replaceWithText((writer) => {
+      if (!variants.isKind(ts.SyntaxKind.ObjectLiteralExpression)) return;
+
+      writeObject({ writer, variants, value: style });
+
+      for (const [i, bp] of breakpoints.entries()) {
+        writeObject({
+          writer,
+          variants,
+          value: style,
+          bp,
+          isLast: i === breakpoints.length - 1,
+        });
+      }
+    });
+
+    debug?.(
+      `plugin:crv`,
+      `ccv: '${replaced.getText()}': ${args.filePath.split('/').at(-1)}`,
     );
-
-    if (!value) continue;
-
-    // Replace full node with spread
-    node.replaceWithText(JSON.stringify(value));
   }
-
-  context.debug?.(
-    `plugin:crv`,
-    `Replaced ${calls.length} ccv calls in: ${args.filePath.split('/').at(-1)}`,
-  );
 
   return source.getText();
 };

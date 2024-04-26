@@ -1,5 +1,6 @@
 import { defineConfig } from '@pandacss/dev';
 import { pluginResponsiveVariants } from 'panda-plugin-crv';
+import { pluginComponentTokens } from 'panda-plugin-ct';
 
 export default defineConfig({
   preflight: true,
@@ -14,5 +15,13 @@ export default defineConfig({
   outdir: 'styled-system',
   logLevel: 'debug',
   clean: true,
-  plugins: [pluginResponsiveVariants()],
+  plugins: [
+    pluginComponentTokens({
+      margin: {
+        sm: { value: '3' },
+        md: { value: '6' },
+      },
+    }),
+    pluginResponsiveVariants(),
+  ],
 });

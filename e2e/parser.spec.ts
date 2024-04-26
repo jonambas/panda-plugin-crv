@@ -8,7 +8,7 @@ test.describe('parser', () => {
   test('direct variant', async ({ page }) => {
     await expect(page.getByText('Direct variant')).toHaveCSS(
       'background-color',
-      'rgb(187, 247, 208)',
+      'rgb(229, 231, 235)',
     );
   });
 
@@ -22,14 +22,14 @@ test.describe('parser', () => {
 
     await expect(page.getByText('Responsive variant')).toHaveCSS(
       'background-color',
-      'rgb(229, 231, 235)',
+      'rgb(254, 202, 202)',
     );
 
     page.setViewportSize({ width: 300, height: 1024 });
 
     await expect(page.getByText('Responsive variant')).toHaveCSS(
       'background-color',
-      'rgb(254, 202, 202)',
+      'rgb(229, 231, 235)',
     );
   });
 
@@ -57,14 +57,24 @@ test.describe('parser', () => {
   test('compound variants', async ({ page }) => {
     await expect(page.getByText('Compound variants').first()).toHaveCSS(
       'background-color',
-      'rgb(251, 191, 36)',
+      'rgb(254, 202, 202)',
+    );
+
+    await expect(page.getByText('Compound variants').first()).toHaveCSS(
+      'color',
+      'rgb(220, 38, 38)',
     );
   });
 
   test('responsive compound variants', async ({ page }) => {
     await expect(page.getByText('Responsive compound variants')).toHaveCSS(
       'background-color',
-      'rgb(187, 247, 208)',
+      'rgb(99, 102, 241)',
+    );
+
+    await expect(page.getByText('Responsive compound variants')).toHaveCSS(
+      'color',
+      'rgb(243, 244, 246)',
     );
 
     page.setViewportSize({ width: 768, height: 1024 });
@@ -74,11 +84,21 @@ test.describe('parser', () => {
       'rgb(229, 231, 235)',
     );
 
+    await expect(page.getByText('Responsive compound variants')).toHaveCSS(
+      'color',
+      'rgb(0, 0, 0)',
+    );
+
     page.setViewportSize({ width: 300, height: 1024 });
 
     await expect(page.getByText('Responsive compound variants')).toHaveCSS(
       'background-color',
-      'rgb(99, 102, 241)',
+      'rgb(229, 231, 235)',
+    );
+
+    await expect(page.getByText('Responsive compound variants')).toHaveCSS(
+      'color',
+      'rgb(0, 0, 0)',
     );
   });
 });
