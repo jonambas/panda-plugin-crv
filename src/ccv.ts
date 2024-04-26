@@ -12,7 +12,8 @@ const groupByBreakpoint = (variants) => {
   return Object.entries(result);
 };
 
-export const ccv = (variants, css) => {
+export const ccv = (args) => {
+  const { css, ...variants }  = args;
   if (!variants || !css) return [];
 
   const compoundVariants = [{ ...variants, css }];
@@ -39,14 +40,16 @@ export const ccvDts = `
  *   })
  * },
  * compoundVariants: [
- *  ...ccv(
- *    { variant1: 'red', variant2: 'blue' },
- *    { bg: 'green' }
- *   )
+ *  ...ccv({
+ *    variant1: 'red',
+ *    variant2: 'blue',
+ *    css: {
+ *      bg: 'green'
+ *    }
+ *  })
  * ]
  */
-export declare const ccv: <T extends Record<any, any>, P extends SystemStyleObject>(
-  variants: T,
-  css: P
-) => Array<{ css: P } & Record<keyof T, any>>;
+export declare const ccv: <T extends Record<any, any> & { css: SystemStyleObject }>(
+  args: T,
+) => Array<{ css: T['css'] } & Record<keyof T, any>>;
 `;

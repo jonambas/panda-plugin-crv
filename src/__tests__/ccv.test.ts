@@ -5,7 +5,7 @@ import * as fs from 'node:fs';
 fs.writeFileSync('_test-ccvFunc.mts', crvFunc(Object.keys(breakpoints)));
 
 const {
-  ccv: ccvCodegen,
+  ccv,
   // @ts-ignore
 } = await import('_test-ccvFunc.mts');
 
@@ -15,13 +15,11 @@ describe('crv codegen', () => {
   });
 
   it('returns the expected variants', () => {
-    const result = ccvCodegen(
-      {
-        variant1: 'red',
-        variant2: 'blue',
-      },
-      { bg: 'green' },
-    );
+    const result = ccv({
+      variant1: 'red',
+      variant2: 'blue',
+      css: { bg: 'green' },
+    });
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -64,24 +62,16 @@ describe('crv codegen', () => {
   });
 
   it('handles no variants', () => {
-    const result = ccvCodegen(
-      // @ts-ignore
-      null,
-      { bg: 'green' },
-    );
+    const result = ccv({ bg: 'green' });
 
     expect(result).toEqual([]);
   });
 
   it('handles no styles', () => {
-    const result = ccvCodegen(
-      {
-        variant1: 'red',
-        variant2: 'blue',
-      },
-      // @ts-ignore
-      null,
-    );
+    const result = ccv({
+      variant1: 'red',
+      variant2: 'blue',
+    });
     expect(result).toEqual([]);
   });
 });

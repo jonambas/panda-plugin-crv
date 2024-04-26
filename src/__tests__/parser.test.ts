@@ -278,8 +278,9 @@ describe('ccv parser', () => {
       compoundVariants: [
         ...ccv({
           variant1: 'red',
-          variant2: 'blue'
-        }, { bg: 'green' }),
+          variant2: 'blue',
+          css: { bg: 'green' }
+        }),
       ],
     });
     `);
@@ -305,8 +306,9 @@ describe('ccv parser', () => {
       compoundVariants: [
         ...alias({
           variant1: 'red',
-          variant2: 'blue'
-        }, { bg: 'green' }),
+          variant2: 'blue',
+          css: { bg: 'green' }
+        }),
       ],
     });
     `);
@@ -379,9 +381,8 @@ describe('ccv parser', () => {
       compoundVariants: [
         ...ccv({
           variant1: 'red',
-          variant2: 'blue'
-        }, {
-          foo: { bar: { baz: '#fff' }}
+          variant2: 'blue',
+          css: { foo: { bar: { baz: '#fff' }} }
         }),
       ],
     });
@@ -407,9 +408,8 @@ describe('ccv parser', () => {
       compoundVariants: [
         ...ccv({
           variant1: 'red',
-          variant2: 'blue'
-        }, {
-          foo: { '& > *': { "3baz": \`\${'#fff'}\`}}
+          variant2: 'blue',
+          css: { foo: { '& > *': { "3baz": \`\${'#fff'}\`}}}
         }),
       ],
     });
@@ -435,9 +435,8 @@ describe('ccv parser', () => {
         compoundVariants: [
           ...ccv({
             variant1: true,
-            variant2: false
-          }, {
-            foo: { bar: { srOnly: false }}
+            variant2: false,
+            css: { foo: { bar: { srOnly: false }} }
           }),
         ],
       });
@@ -465,9 +464,8 @@ describe('ccv parser', () => {
         compoundVariants: [
           ...ccv({
             variant1: 1,
-            variant2: 0
-          }, {
-            foo: { opacity: 0.5 }
+            variant2: 0,
+            css: { foo: { opacity: 0.5 }}
           }),
         ],
       });
@@ -493,9 +491,8 @@ describe('ccv parser', () => {
         compoundVariants: [
           ...ccv({
             variant1: 1,
-            variant2: 0
-          }, {
-            foo: { opacity: get('test'), bg: \`\${get('test')}\` }
+            variant2: 0,
+            css: { foo: { opacity: get('test'), bg: \`\${get('test')}\` }}
           }),
         ],
       });
