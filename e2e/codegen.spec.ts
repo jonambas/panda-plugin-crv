@@ -36,7 +36,7 @@ test.describe('codegen', () => {
 
   test('responsive compound variants', async ({ page }) => {
     await expect(page.getByText('Responsive compound variants')).toHaveClass(
-      'text_black p_3 rounded_3px md:bg_gray.200 md:rounded_10px md:m_3 lg:bg_indigo.500 lg:text_gray.100 lg:m_0 bg_gray.200',
+      'text_black p_3 rounded_3px md:bg_gray.200 md:rounded_10px md:m_3 lg:bg_indigo.500 lg:text_gray.100 lg:m_0 bg_amber.500',
     );
   });
 });
