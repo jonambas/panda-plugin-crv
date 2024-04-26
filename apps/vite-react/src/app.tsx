@@ -10,6 +10,7 @@ import {
   ResponsiveVariant,
   splitCrv,
 } from '@/styled-system/css';
+import { ct } from '@/styled-system/css/ct';
 
 const recipe = cva({
   base: {
@@ -38,8 +39,14 @@ const recipe = cva({
     }),
   },
   compoundVariants: [
-    ...ccv({ tone: 'neutral', test: 'foo' }, { bg: 'amber.400' }),
-    ...ccv({ tone: 'negative', test: 'bar' }, { bg: 'indigo.500' }),
+    ...ccv(
+      { tone: 'neutral', test: 'foo' },
+      { bg: 'amber.400', color: ct('test.negative') },
+    ),
+    ...ccv(
+      { tone: 'negative', test: 'bar' },
+      { bg: 'indigo.500', color: ct('test.positive') },
+    ),
   ],
 });
 

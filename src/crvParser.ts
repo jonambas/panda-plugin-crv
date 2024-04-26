@@ -13,15 +13,37 @@ export const makeObject = (node: ObjectLiteralExpression) => {
       const initializer = prop.getInitializer();
       const nameNode = prop.getNameNode();
 
+      if (!initializer) return obj;
+
       const name = nameNode.isKind(ts.SyntaxKind.StringLiteral)
         ? nameNode.getLiteralText()
         : prop.getName();
 
-      const value = initializer?.isKind(ts.SyntaxKind.ObjectLiteralExpression)
-        ? makeObject(initializer)
-        : initializer?.isKind(ts.SyntaxKind.StringLiteral)
-          ? initializer.getLiteralText()
-          : JSON.parse(initializer?.getText() ?? '{}'); // try to parse everything else
+      let value;
+
+      if (initializer.isKind(ts.SyntaxKind.ObjectLiteralExpression)) {
+        value = makeObject(initializer);
+      }
+
+      // This doesn't work, plugin needs to come after call expression are replaced
+      if (initializer.isKind(ts.SyntaxKind.CallExpression)) {
+        value = initializer.getText();
+      }
+
+      if (
+        initializer.isKind(ts.SyntaxKind.StringLiteral) ||
+        initializer.isKind(ts.SyntaxKind.NumericLiteral) ||
+        initializer.isKind(ts.SyntaxKind.TrueKeyword) ||
+        initializer.isKind(ts.SyntaxKind.FalseKeyword) ||
+        initializer.isKind(ts.SyntaxKind.NoSubstitutionTemplateLiteral)
+      ) {
+        value = initializer.getLiteralValue();
+      }
+
+      // Not sure if this works
+      if (initializer.isKind(ts.SyntaxKind.TemplateExpression)) {
+        value = initializer.getText();
+      }
 
       obj[name] = value;
     }

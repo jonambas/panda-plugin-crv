@@ -198,4 +198,57 @@ describe('parsers', () => {
             "
     `);
   });
+
+  it('parses nested objects', () => {
+    const res = makeParser(`
+    import foo from 'bar';
+    import { css, crv, cva, ccv } from '@/styled-system/css';
+
+    const styles = cva({
+      base: {
+        // background: crv('nope'),
+      },
+      variants: {
+        ...crv('tone', {
+          negative: { bg: \`red.200\`, srOnly: true, opacity: 0 },
+          "positive": { bg: "green.200", _focusVisible: \`\${'test'}\`, dark: \`\${ct('alias')}\` }
+        }),
+        ...crv('size', {
+          sm: { p: "4", opacity: 0, srOnly: false, '&>*': { bg: 'red.200' } },
+          'lg': { p: "5" }
+        }),
+      },
+      compoundVariants: [
+        ...ccv({ tone: 'negative', size: 'sm' }, { bg: 'amber.400' }),
+      ]
+    });
+
+    export const Component = () => {
+      return (<div className={}
+      />);
+    `);
+
+    expect(res).toMatchInlineSnapshot(`
+      "import foo from 'bar';
+          import { css, crv, cva, ccv } from '@/styled-system/css';
+
+          const styles = cva({
+            base: {
+              // background: crv('nope'),
+            },
+            variants: {
+              ...{"tone":{"negative":{"bg":"red.200","srOnly":true,"opacity":0},"positive":{"bg":"green.200","_focusVisible":"\`\${'test'}\`","dark":"\`\${ct('alias')}\`"}},"tone_sm":{"negative":{"sm":{"bg":"red.200","srOnly":true,"opacity":0}},"positive":{"sm":{"bg":"green.200","_focusVisible":"\`\${'test'}\`","dark":"\`\${ct('alias')}\`"}}},"tone_md":{"negative":{"md":{"bg":"red.200","srOnly":true,"opacity":0}},"positive":{"md":{"bg":"green.200","_focusVisible":"\`\${'test'}\`","dark":"\`\${ct('alias')}\`"}}},"tone_lg":{"negative":{"lg":{"bg":"red.200","srOnly":true,"opacity":0}},"positive":{"lg":{"bg":"green.200","_focusVisible":"\`\${'test'}\`","dark":"\`\${ct('alias')}\`"}}},"tone_xl":{"negative":{"xl":{"bg":"red.200","srOnly":true,"opacity":0}},"positive":{"xl":{"bg":"green.200","_focusVisible":"\`\${'test'}\`","dark":"\`\${ct('alias')}\`"}}},"tone_xxl":{"negative":{"xxl":{"bg":"red.200","srOnly":true,"opacity":0}},"positive":{"xxl":{"bg":"green.200","_focusVisible":"\`\${'test'}\`","dark":"\`\${ct('alias')}\`"}}}},
+              ...{"size":{"sm":{"p":"4","opacity":0,"srOnly":false,"&>*":{"bg":"red.200"}},"lg":{"p":"5"}},"size_sm":{"sm":{"sm":{"p":"4","opacity":0,"srOnly":false,"&>*":{"bg":"red.200"}}},"lg":{"sm":{"p":"5"}}},"size_md":{"sm":{"md":{"p":"4","opacity":0,"srOnly":false,"&>*":{"bg":"red.200"}}},"lg":{"md":{"p":"5"}}},"size_lg":{"sm":{"lg":{"p":"4","opacity":0,"srOnly":false,"&>*":{"bg":"red.200"}}},"lg":{"lg":{"p":"5"}}},"size_xl":{"sm":{"xl":{"p":"4","opacity":0,"srOnly":false,"&>*":{"bg":"red.200"}}},"lg":{"xl":{"p":"5"}}},"size_xxl":{"sm":{"xxl":{"p":"4","opacity":0,"srOnly":false,"&>*":{"bg":"red.200"}}},"lg":{"xxl":{"p":"5"}}}},
+            },
+            compoundVariants: [
+              [{"tone":"negative","size":"sm","css":{"bg":"amber.400"}},{"tone_sm":"negative","size_sm":"sm","css":{"bg":{"sm":"amber.400"}}},{"tone_md":"negative","size_md":"sm","css":{"bg":{"md":"amber.400"}}},{"tone_lg":"negative","size_lg":"sm","css":{"bg":{"lg":"amber.400"}}},{"tone_xl":"negative","size_xl":"sm","css":{"bg":{"xl":"amber.400"}}},{"tone_xxl":"negative","size_xxl":"sm","css":{"bg":{"xxl":"amber.400"}}}],
+            ]
+          });
+
+          export const Component = () => {
+            return (<div className={}
+            />);
+          "
+    `);
+  });
 });
