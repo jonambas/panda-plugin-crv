@@ -26,8 +26,6 @@ export const ccv = (args) => {
 };`;
 
 export const ccvDts = `
-
-type 
 /**
  * Create compound variants
  *
@@ -42,9 +40,13 @@ type
  *   })
  * },
  * compoundVariants: [
- *  ...ccv(
- *    { variant1: 'red', variant2: 'blue', css: { bg: 'green' }},
- *   )
+ *  ...ccv({
+ *    variant1: 'red',
+ *    variant2: 'blue',
+ *    css: {
+ *      bg: 'green'
+ *    }
+ *  })
  * ]
  */
 export declare const ccv: <T extends Record<any, any> & { css: SystemStyleObject }>(
