@@ -38,7 +38,7 @@ import { crv, cva } from '@/styled-system/css';
 
 const styles = cva({
   variants: {
-    // create responsive variants
+    // Create responsive variants
     ...crv('variant', {
       primary: { bg: 'blue.500' },
       secondary: { bg: 'gray.500' },
@@ -100,15 +100,14 @@ const styles = cva({
     }),
   },
   compoundVariants: [
-    ...ccv(
-      {
-        variant1: 'primary',
-        variant2: true,
-      },
-      {
+    // Create compound variants
+    ...ccv({
+      variant1: 'primary',
+      variant2: true,
+      css: {
         color: 'green.500',
       },
-    ),
+    }),
   ],
 });
 ```
