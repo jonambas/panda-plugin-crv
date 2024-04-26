@@ -6,11 +6,11 @@ import {
   css,
   cva,
   cx,
+  ct,
   splitResponsiveVariant,
   ResponsiveVariant,
   splitCrv,
 } from '@/styled-system/css';
-import { ct } from '@/styled-system/css/ct';
 
 const recipe = cva({
   base: {

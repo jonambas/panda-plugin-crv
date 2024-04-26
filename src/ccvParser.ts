@@ -1,8 +1,8 @@
 import type { ParserResultBeforeHookArgs } from '@pandacss/types';
-import { ObjectLiteralExpression, SourceFile, ts } from 'ts-morph';
+import { SourceFile, ts } from 'ts-morph';
 import type { PluginContext } from './types';
 import { ccv } from './ccv';
-import { makeObject } from './crvParser';
+import { makeObject } from './object';
 
 export const ccvParser = (
   args: ParserResultBeforeHookArgs,
@@ -36,8 +36,8 @@ export const ccvParser = (
 
     if (!call) continue;
 
-    const variants = call.getArguments()[0] as ObjectLiteralExpression;
-    const styles = call.getArguments()[1] as ObjectLiteralExpression;
+    const variants = call.getArguments()[0];
+    const styles = call.getArguments()[1];
     const value = ccv(
       makeObject(variants),
       makeObject(styles),
