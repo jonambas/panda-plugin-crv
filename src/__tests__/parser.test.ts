@@ -409,7 +409,7 @@ describe('ccv parser', () => {
           variant1: 'red',
           variant2: 'blue'
         }, {
-          \`foo\`: { '& > *': { "3baz": \`\${'#fff'}\`}}
+          foo: { '& > *': { "3baz": \`\${'#fff'}\`}}
         }),
       ],
     });
@@ -420,12 +420,7 @@ describe('ccv parser', () => {
 
           const styles = cva({
             compoundVariants: [
-              ...ccv({
-                variant1: 'red',
-                variant2: 'blue'
-              }, {
-                \`foo\`: { '& > *': { "3baz": \`\${'#fff'}\`}}
-              }),
+              {variant1: 'red',variant2: 'blue',css: {foo: { '& > *': { "3baz": \`\${'#fff'}\`}},},{variant1_sm: 'red',variant2_sm: 'blue',css: {'sm': {foo: { '& > *': { "3baz": \`\${'#fff'}\`}},}},},{variant1_md: 'red',variant2_md: 'blue',css: {'md': {foo: { '& > *': { "3baz": \`\${'#fff'}\`}},}},},{variant1_2lg: 'red',variant2_2lg: 'blue',css: {'2lg': {foo: { '& > *': { "3baz": \`\${'#fff'}\`}},}},},
             ],
           });
           "
