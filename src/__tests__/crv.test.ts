@@ -105,11 +105,13 @@ describe('splitCrv codegen', () => {
     const result = splitCrv('prop', {
       base: 'variant1',
       sm: 'variant2',
+      '2lg': 'variant3',
     });
 
     expect(result).toMatchInlineSnapshot(`
       {
         "prop": "variant1",
+        "prop_2lg": "variant3",
         "prop_sm": "variant2",
       }
     `);
@@ -131,16 +133,17 @@ describe('splitCrv codegen', () => {
   it('handles falsey values', async () => {
     const result = splitCrv('prop', {
       base: null,
-      lg: false,
+      sm: false,
       md: '',
-      xl: undefined,
-      xxl: 0,
+      '2lg': undefined,
     });
 
     expect(result).toMatchInlineSnapshot(`
       {
         "prop": null,
+        "prop_2lg": undefined,
         "prop_md": "",
+        "prop_sm": false,
       }
     `);
   });
