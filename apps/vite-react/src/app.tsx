@@ -5,7 +5,6 @@ import {
   ccv,
   css,
   cva,
-  cx,
   ct,
   splitResponsiveVariant,
   ResponsiveVariant,
