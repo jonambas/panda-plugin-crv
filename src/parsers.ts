@@ -11,7 +11,7 @@ const getImports = (source: SourceFile) => {
 
   for (const node of source.getImportDeclarations()) {
     if (
-      !node.getText().includes(names[0]) ||
+      !node.getText().includes(names[0]) &&
       !node.getText().includes(names[1])
     ) {
       continue;
@@ -28,7 +28,6 @@ const getImports = (source: SourceFile) => {
       }
     }
   }
-
   return imports;
 };
 
