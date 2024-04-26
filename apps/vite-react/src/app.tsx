@@ -57,6 +57,11 @@ const recipe = cva({
       variant2: 'baz',
       css: { bg: 'indigo.500', color: 'gray.100', margin: 0 },
     }),
+    ...ccv({
+      variant1: 'foo',
+      variant2: 'foo',
+      css: { bg: 'amber.500' },
+    }),
   ],
 });
 

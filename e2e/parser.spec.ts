@@ -55,14 +55,19 @@ test.describe('parser', () => {
   });
 
   test('compound variants', async ({ page }) => {
-    await expect(page.getByText('Compound variants').first()).toHaveCSS(
+    await expect(page.getByText('Direct compound variants')).toHaveCSS(
       'background-color',
       'rgb(254, 202, 202)',
     );
 
-    await expect(page.getByText('Compound variants').first()).toHaveCSS(
+    await expect(page.getByText('Direct compound variants')).toHaveCSS(
       'color',
       'rgb(220, 38, 38)',
+    );
+
+    await expect(page.getByText('Direct compound variants')).toHaveCSS(
+      'margin',
+      '12px',
     );
   });
 
@@ -75,6 +80,11 @@ test.describe('parser', () => {
     await expect(page.getByText('Responsive compound variants')).toHaveCSS(
       'color',
       'rgb(243, 244, 246)',
+    );
+
+    await expect(page.getByText('Responsive compound variants')).toHaveCSS(
+      'margin',
+      '0px',
     );
 
     page.setViewportSize({ width: 768, height: 1024 });
@@ -94,11 +104,16 @@ test.describe('parser', () => {
       '10px',
     );
 
+    await expect(page.getByText('Responsive compound variants')).toHaveCSS(
+      'margin',
+      '12px',
+    );
+
     page.setViewportSize({ width: 300, height: 1024 });
 
     await expect(page.getByText('Responsive compound variants')).toHaveCSS(
       'background-color',
-      'rgb(229, 231, 235)',
+      'rgb(245, 158, 11)',
     );
 
     await expect(page.getByText('Responsive compound variants')).toHaveCSS(
@@ -109,6 +124,11 @@ test.describe('parser', () => {
     await expect(page.getByText('Responsive compound variants')).toHaveCSS(
       'border-radius',
       '3px',
+    );
+
+    await expect(page.getByText('Responsive compound variants')).toHaveCSS(
+      'margin',
+      '0px',
     );
   });
 });
