@@ -28,7 +28,7 @@ describe('codegen', () => {
           "files": [
             {
               "code": "
-      const crvBreakpoints = ['sm', 'md', 'lg', 'xl', 'xxl'];
+      const crvBreakpoints = ['sm', 'md', '2lg'];
 
       const makeKey = (name, bp) => {
         return \`\${name}_\${bp}\`;
@@ -92,7 +92,7 @@ describe('codegen', () => {
         const compoundVariants = [{ ...variants, css }];
 
         for (const [bp, keys] of groupByBreakpoint(variants)) {
-          compoundVariants.push({ ...keys, css: injectBreakpoint(css, bp)});
+          compoundVariants.push({ ...keys, css: { [bp]: css } });
         }
 
         return compoundVariants;
@@ -104,7 +104,7 @@ describe('codegen', () => {
               "code": "/* eslint-disable */
       import type { SystemStyleObject } from '../types/system-types';
 
-      type CrvBreakpoints = 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+      type CrvBreakpoints = 'sm' | 'md' | '2lg';
 
       /**
        * Create responsive variants

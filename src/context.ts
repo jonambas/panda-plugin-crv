@@ -1,4 +1,4 @@
-import { Project, ts } from 'ts-morph';
+import { IndentationText, Project, ts } from 'ts-morph';
 import type { PluginContext } from './types';
 
 export const createContext = (): PluginContext => ({
@@ -17,6 +17,9 @@ export const createContext = (): PluginContext => ({
     skipAddingFilesFromTsConfig: true,
     skipFileDependencyResolution: true,
     skipLoadingLibFiles: true,
+    manipulationSettings: {
+      indentationText: IndentationText.TwoSpaces,
+    },
   }),
   breakpoints: [],
 });

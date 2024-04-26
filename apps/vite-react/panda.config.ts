@@ -17,9 +17,9 @@ export default defineConfig({
   clean: true,
   plugins: [
     pluginComponentTokens({
-      test: {
-        negative: { value: 'red.200' },
-        positive: { value: 'green.500' },
+      margin: {
+        sm: { value: '3' },
+        md: { value: '6' },
       },
     }),
     pluginResponsiveVariants(),
