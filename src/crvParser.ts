@@ -42,7 +42,7 @@ export const crvParser = (
   context: PluginContext,
   source: SourceFile,
   alias: string = 'crv',
-): string | void => {
+) => {
   const { breakpoints, debug } = context;
   const calls = source
     .getDescendantsOfKind(ts.SyntaxKind.CallExpression)

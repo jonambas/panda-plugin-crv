@@ -4,51 +4,54 @@ import { crvParser } from './crvParser';
 import { ccvParser } from './ccvParser';
 import type { SourceFile } from 'ts-morph';
 
-const getImports = (source: SourceFile, name: string) => {
-  let exists = false;
-  let alias = name;
+const names = ['crv', 'ccv'] as const;
+
+const getImports = (source: SourceFile) => {
+  const imports: Partial<Record<(typeof names)[number], string>> = {};
 
   for (const node of source.getImportDeclarations()) {
-    if (!node.getText().includes(name)) continue;
+    if (
+      !node.getText().includes(names[0]) &&
+      !node.getText().includes(names[1])
+    ) {
+      continue;
+    }
+
     for (const named of node.getNamedImports()) {
-      if (
-        named.getText() === name ||
-        named.getText().startsWith(`${name} as`)
-      ) {
-        exists = true;
-        alias = named.getAliasNode()?.getText() ?? name;
+      for (const name of names) {
+        if (
+          named.getText() === name ||
+          named.getText().startsWith(`${name} as`)
+        ) {
+          imports[name] = named.getAliasNode()?.getText() ?? name;
+        }
       }
     }
   }
-
-  return [exists, alias] as const;
+  return imports;
 };
 
 export const parsers = (
   args: ParserResultBeforeHookArgs,
   context: PluginContext,
-): string | void => {
+) => {
   const { project } = context;
-  let ccv, crv;
+  let changed;
 
   const source = project.createSourceFile('__crv-parser.tsx', args.content, {
     overwrite: true,
   });
 
-  const [crvExists, crvAlias] = getImports(source, 'crv');
-  const [ccvExists, ccvAlias] = getImports(source, 'ccv');
+  const imports = getImports(source);
 
-  if (!crvExists && !ccvExists) return;
-
-  if (crvExists) {
-    crv = crvParser(args, context, source, crvAlias);
+  if (imports.crv) {
+    changed = crvParser(args, context, source, imports.crv);
   }
 
-  if (ccvExists) {
-    ccv = ccvParser(args, context, source, ccvAlias);
+  if (imports.ccv) {
+    changed = ccvParser(args, context, source, imports.ccv) ?? changed;
   }
 
-  if (!crv && !ccv) return;
-
+  if (!changed) return;
   return source.getText();
 };

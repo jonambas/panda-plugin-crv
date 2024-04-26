@@ -49,7 +49,7 @@ export const ccvParser = (
   context: PluginContext,
   source: SourceFile,
   alias: string = 'ccv',
-): string | void => {
+) => {
   const { breakpoints, debug } = context;
 
   // Panda bug: spreads are not parsed in compoundVariants
