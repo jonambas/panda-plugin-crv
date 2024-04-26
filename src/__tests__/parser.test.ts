@@ -12,7 +12,7 @@ export const makeParser = (content: string) => {
   );
 };
 
-describe('parsers', () => {
+describe('crv parser', () => {
   it('parses', () => {
     const res = makeParser(`
     import foo from 'bar';
@@ -25,9 +25,6 @@ describe('parsers', () => {
           positive: { bg: "green.200" }
         }),
       },
-      compoundVariants: [
-        ...ccv({ tone: 'negative', size: 'sm' }, { bg: 'amber.400' }),
-      ]
     });
     `);
 
@@ -40,9 +37,6 @@ describe('parsers', () => {
             variants: {
               ...{tone: {negative: { bg: "red.200" },positive: { bg: "green.200" },},tone_sm: {negative: {'sm':{ bg: "red.200" },},positive: {'sm':{ bg: "green.200" },},},tone_md: {negative: {'md':{ bg: "red.200" },},positive: {'md':{ bg: "green.200" },},},tone_2lg: {negative: {'2lg':{ bg: "red.200" },},positive: {'2lg':{ bg: "green.200" },},},},
             },
-            compoundVariants: [
-              {tone: 'negative',size: 'sm',css: {bg: 'amber.400',},{tone: 'negative',size: 'sm',css: {'sm': {bg: 'amber.400',}},},{tone: 'negative',size: 'sm',css: {'md': {bg: 'amber.400',}},},{tone: 'negative',size: 'sm',css: {'2lg': {bg: 'amber.400',}},},
-            ]
           });
           "
     `,
@@ -268,6 +262,252 @@ describe('parsers', () => {
               variants: {
                 ...{tone: {positive: { bg: get('color') },negative: { bg: get('color2') },},tone_sm: {positive: {'sm':{ bg: get('color') },},negative: {'sm':{ bg: get('color2') },},},tone_md: {positive: {'md':{ bg: get('color') },},negative: {'md':{ bg: get('color2') },},},tone_2lg: {positive: {'2lg':{ bg: get('color') },},negative: {'2lg':{ bg: get('color2') },},},},
               }
+            });
+            "
+    `);
+  });
+});
+
+describe('ccv parser', () => {
+  it('parses', () => {
+    const res = makeParser(`
+    import foo from 'bar';
+    import { css, cva, ccv } from '@/styled-system/css';
+
+    const styles = cva({
+      compoundVariants: [
+        ...ccv({
+          variant1: 'red',
+          variant2: 'blue'
+        }, { bg: 'green' }),
+      ],
+    });
+    `);
+
+    expect(res).toMatchInlineSnapshot(`
+      "import foo from 'bar';
+          import { css, cva, ccv } from '@/styled-system/css';
+
+          const styles = cva({
+            compoundVariants: [
+              {variant1: 'red',variant2: 'blue',css: {bg: 'green',},{variant1_sm: 'red',variant2_sm: 'blue',css: {'sm': {bg: 'green',}},},{variant1_md: 'red',variant2_md: 'blue',css: {'md': {bg: 'green',}},},{variant1_2lg: 'red',variant2_2lg: 'blue',css: {'2lg': {bg: 'green',}},},
+            ],
+          });
+          "
+    `);
+  });
+
+  it('parses with an import alias', () => {
+    const res = makeParser(`
+    import { css, ccv as alias, cva } from '@/styled-system/css';
+
+    const styles = cva({
+      compoundVariants: [
+        ...alias({
+          variant1: 'red',
+          variant2: 'blue'
+        }, { bg: 'green' }),
+      ],
+    });
+    `);
+
+    expect(res).toMatchInlineSnapshot(`
+      "import { css, ccv as alias, cva } from '@/styled-system/css';
+
+          const styles = cva({
+            compoundVariants: [
+              {variant1: 'red',variant2: 'blue',css: {bg: 'green',},{variant1_sm: 'red',variant2_sm: 'blue',css: {'sm': {bg: 'green',}},},{variant1_md: 'red',variant2_md: 'blue',css: {'md': {bg: 'green',}},},{variant1_2lg: 'red',variant2_2lg: 'blue',css: {'2lg': {bg: 'green',}},},
+            ],
+          });
+          "
+    `);
+  });
+
+  it('parses without style object', () => {
+    const res = makeParser(`
+    import { css, crv, cva } from '@/styled-system/css';
+
+    const styles = cva({
+      compoundVariants: [
+        ...ccv({
+          variant1: 'red',
+          variant2: 'blue'
+        }),
+      ],
+    });
+    `);
+
+    expect(res).toBeUndefined();
+  });
+
+  it('skips without crv imports or expressions', () => {
+    expect(makeParser(`ccv({}, {})`)).toBeUndefined();
+
+    expect(
+      makeParser(`import { ccv } from '@/styled-system/css`),
+    ).toBeUndefined();
+  });
+
+  it('skips without crv return value', () => {
+    expect(
+      makeParser(`
+        import { ccv, cva } from '@/styled-system/css';
+
+        const styles = cva({
+          compoundVariants: [
+            ...ccv(),
+          ],
+        });
+      `),
+    ).toMatchInlineSnapshot(`
+      "import { ccv, cva } from '@/styled-system/css';
+
+              const styles = cva({
+                compoundVariants: [
+                  ...ccv(),
+                ],
+              });
+            "
+    `);
+  });
+
+  it('parses nested objects', () => {
+    const res = makeParser(`
+    import { css, ccv, cva } from '@/styled-system/css';
+
+    const styles = cva({
+      compoundVariants: [
+        ...ccv({
+          variant1: 'red',
+          variant2: 'blue'
+        }, {
+          foo: { bar: { baz: '#fff' }}
+        }),
+      ],
+    });
+    `);
+
+    expect(res).toMatchInlineSnapshot(`
+      "import { css, ccv, cva } from '@/styled-system/css';
+
+          const styles = cva({
+            compoundVariants: [
+              {variant1: 'red',variant2: 'blue',css: {foo: { bar: { baz: '#fff' }},},{variant1_sm: 'red',variant2_sm: 'blue',css: {'sm': {foo: { bar: { baz: '#fff' }},}},},{variant1_md: 'red',variant2_md: 'blue',css: {'md': {foo: { bar: { baz: '#fff' }},}},},{variant1_2lg: 'red',variant2_2lg: 'blue',css: {'2lg': {foo: { bar: { baz: '#fff' }},}},},
+            ],
+          });
+          "
+    `);
+  });
+
+  it('parses different quote styles', () => {
+    const res = makeParser(`
+    import { css, ccv, cva } from '@/styled-system/css';
+
+    const styles = cva({
+      compoundVariants: [
+        ...ccv({
+          variant1: 'red',
+          variant2: 'blue'
+        }, {
+          foo: { '& > *': { "3baz": \`\${'#fff'}\`}}
+        }),
+      ],
+    });
+    `);
+
+    expect(res).toMatchInlineSnapshot(`
+      "import { css, ccv, cva } from '@/styled-system/css';
+
+          const styles = cva({
+            compoundVariants: [
+              {variant1: 'red',variant2: 'blue',css: {foo: { '& > *': { "3baz": \`\${'#fff'}\`}},},{variant1_sm: 'red',variant2_sm: 'blue',css: {'sm': {foo: { '& > *': { "3baz": \`\${'#fff'}\`}},}},},{variant1_md: 'red',variant2_md: 'blue',css: {'md': {foo: { '& > *': { "3baz": \`\${'#fff'}\`}},}},},{variant1_2lg: 'red',variant2_2lg: 'blue',css: {'2lg': {foo: { '& > *': { "3baz": \`\${'#fff'}\`}},}},},
+            ],
+          });
+          "
+    `);
+  });
+
+  it('parses booleans', () => {
+    const res = makeParser(`
+      import { css, ccv, cva } from '@/styled-system/css';
+
+      const styles = cva({
+        compoundVariants: [
+          ...ccv({
+            variant1: true,
+            variant2: false
+          }, {
+            foo: { bar: { srOnly: false }}
+          }),
+        ],
+      });
+      `);
+
+    expect(res).toMatchInlineSnapshot(
+      `
+      "import { css, ccv, cva } from '@/styled-system/css';
+
+            const styles = cva({
+              compoundVariants: [
+                {variant1: true,variant2: false,css: {foo: { bar: { srOnly: false }},},{variant1_sm: true,variant2_sm: false,css: {'sm': {foo: { bar: { srOnly: false }},}},},{variant1_md: true,variant2_md: false,css: {'md': {foo: { bar: { srOnly: false }},}},},{variant1_2lg: true,variant2_2lg: false,css: {'2lg': {foo: { bar: { srOnly: false }},}},},
+              ],
+            });
+            "
+    `,
+    );
+  });
+
+  it('parses numbers', () => {
+    const res = makeParser(`
+      import { css, ccv, cva } from '@/styled-system/css';
+
+      const styles = cva({
+        compoundVariants: [
+          ...ccv({
+            variant1: 1,
+            variant2: 0
+          }, {
+            foo: { opacity: 0.5 }
+          }),
+        ],
+      });
+      `);
+
+    expect(res).toMatchInlineSnapshot(`
+      "import { css, ccv, cva } from '@/styled-system/css';
+
+            const styles = cva({
+              compoundVariants: [
+                {variant1: 1,variant2: 0,css: {foo: { opacity: 0.5 },},{variant1_sm: 1,variant2_sm: 0,css: {'sm': {foo: { opacity: 0.5 },}},},{variant1_md: 1,variant2_md: 0,css: {'md': {foo: { opacity: 0.5 },}},},{variant1_2lg: 1,variant2_2lg: 0,css: {'2lg': {foo: { opacity: 0.5 },}},},
+              ],
+            });
+            "
+    `);
+  });
+
+  it('parses funcs', () => {
+    const res = makeParser(`
+      import { css, ccv, cva } from '@/styled-system/css';
+
+      const styles = cva({
+        compoundVariants: [
+          ...ccv({
+            variant1: 1,
+            variant2: 0
+          }, {
+            foo: { opacity: get('test'), bg: \`\${get('test')}\` }
+          }),
+        ],
+      });
+      `);
+
+    expect(res).toMatchInlineSnapshot(`
+      "import { css, ccv, cva } from '@/styled-system/css';
+
+            const styles = cva({
+              compoundVariants: [
+                {variant1: 1,variant2: 0,css: {foo: { opacity: get('test'), bg: \`\${get('test')}\` },},{variant1_sm: 1,variant2_sm: 0,css: {'sm': {foo: { opacity: get('test'), bg: \`\${get('test')}\` },}},},{variant1_md: 1,variant2_md: 0,css: {'md': {foo: { opacity: get('test'), bg: \`\${get('test')}\` },}},},{variant1_2lg: 1,variant2_2lg: 0,css: {'2lg': {foo: { opacity: get('test'), bg: \`\${get('test')}\` },}},},
+              ],
             });
             "
     `);

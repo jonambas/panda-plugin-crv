@@ -6,6 +6,7 @@ import {
   ts,
 } from 'ts-morph';
 import type { PluginContext } from './types';
+import { makeKey } from './crv';
 
 const clean = (str: string) => str.replace(/^\s+|\s+$|\s+(?=\s)/g, '');
 
@@ -23,10 +24,14 @@ export const writeObject = (args: WriterArgs) => {
   writer.write('{');
 
   for (const property of variants.getProperties()) {
-    if (!property.isKind(ts.SyntaxKind.PropertyAssignment)) {
-      continue;
+    if (!property.isKind(ts.SyntaxKind.PropertyAssignment)) continue;
+    const initializer = property.getInitializer()?.getText() ?? '';
+    if (bp) {
+      writer.write(`${makeKey(property.getName(), bp)}: `);
+      writer.write(`${clean(initializer)},`);
+    } else {
+      writer.write(`${clean(property.getText())},`);
     }
-    writer.write(`${property.getText()},`);
   }
   writer.write('css: {');
 

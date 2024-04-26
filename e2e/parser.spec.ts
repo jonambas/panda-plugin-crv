@@ -89,6 +89,11 @@ test.describe('parser', () => {
       'rgb(0, 0, 0)',
     );
 
+    await expect(page.getByText('Responsive compound variants')).toHaveCSS(
+      'border-radius',
+      '10px',
+    );
+
     page.setViewportSize({ width: 300, height: 1024 });
 
     await expect(page.getByText('Responsive compound variants')).toHaveCSS(
@@ -99,6 +104,11 @@ test.describe('parser', () => {
     await expect(page.getByText('Responsive compound variants')).toHaveCSS(
       'color',
       'rgb(0, 0, 0)',
+    );
+
+    await expect(page.getByText('Responsive compound variants')).toHaveCSS(
+      'border-radius',
+      '3px',
     );
   });
 });
