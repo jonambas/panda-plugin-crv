@@ -39,18 +39,24 @@ const recipe = cva({
     }),
   },
   compoundVariants: [
-    ...ccv(
-      { variant1: 'bar', variant2: 'foo' },
-      { borderRadius: '10px', margin: ct('margin.sm') },
-    ),
-    ...ccv(
-      { variant1: 'foo', variant2: 'bar' },
-      { color: 'red.600', margin: ct('margin.sm') },
-    ),
-    ...ccv(
-      { variant1: 'foo', variant2: 'baz' },
-      { bg: 'indigo.500', color: 'gray.100', margin: 0 },
-    ),
+    ...ccv({
+      variant1: 'bar',
+      variant2: 'foo',
+      css: {
+        borderRadius: '10px',
+        margin: ct('margin.sm'),
+      },
+    }),
+    ...ccv({
+      variant1: 'foo',
+      variant2: 'bar',
+      css: { color: 'red.600', margin: ct('margin.sm') },
+    }),
+    ...ccv({
+      variant1: 'foo',
+      variant2: 'baz',
+      css: { bg: 'indigo.500', color: 'gray.100', margin: 0 },
+    }),
   ],
 });
 
