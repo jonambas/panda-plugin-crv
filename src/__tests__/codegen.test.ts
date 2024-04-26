@@ -138,8 +138,6 @@ describe('codegen', () => {
       export type ResponsiveVariant<T> = Partial<Record<'base' | CrvBreakpoints, T>> | T;
 
 
-
-      type 
       /**
        * Create compound variants
        *
@@ -154,9 +152,13 @@ describe('codegen', () => {
        *   })
        * },
        * compoundVariants: [
-       *  ...ccv(
-       *    { variant1: 'red', variant2: 'blue', css: { bg: 'green' }},
-       *   )
+       *  ...ccv({
+       *    variant1: 'red',
+       *    variant2: 'blue',
+       *    css: {
+       *      bg: 'green'
+       *    }
+       *  })
        * ]
        */
       export declare const ccv: <T extends Record<any, any> & { css: SystemStyleObject }>(
