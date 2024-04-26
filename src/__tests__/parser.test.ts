@@ -268,8 +268,8 @@ describe('crv parser', () => {
   });
 });
 
-describe.only('ccv parser', () => {
-  it.only('parses', () => {
+describe('ccv parser', () => {
+  it('parses', () => {
     const res = makeParser(`
     import foo from 'bar';
     import { css, cva, ccv } from '@/styled-system/css';
