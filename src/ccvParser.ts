@@ -41,6 +41,7 @@ export const writeObject = (args: WriterArgs) => {
     writer.write(`${clean(variant.getText())},`);
   }
   if (bp) writer.write(`}},`);
+  if (!bp) writer.write(`},`);
   writer.write(isLast ? '}' : '},');
 };
 
