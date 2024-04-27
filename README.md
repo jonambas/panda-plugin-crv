@@ -127,6 +127,23 @@ The above code will render `"green.500"` if `variant1` is `"primary"` and if `va
 
 ---
 
+### Should I use this plugin?
+
+This plugin solve a specific use case that Panda's config recipes and atomic (cva) recipes do not cover. Generally, if you maintain a component library, and need to support **responsive variants**, with **responsive compound variants**, this plugin is for you.
+
+See Panda's documenation on [config recipes vs. atomic recipes (cva)](https://panda-css.com/docs/concepts/recipes#should-i-use-atomic-or-config-recipes-).
+
+|                                     | config recipe | cva | cva + crv     |
+| ----------------------------------- | ------------- | --- | ------------- |
+| Theme tokens, utilities, conditions | ✅            | ✅  | ✅            |
+| Generated JIT                       | ✅            | ❌  | ❌            |
+| Preset sharing                      | ✅            | ❌  | ❌            |
+| Colocation with components          | ❌            | ✅  | ✅            |
+| Atomic classes                      | ❌            | ✅  | ✅            |
+| Can be composed/merged at runtime   | ❌            | ✅  | ✅            |
+| Responsive variants                 | ✅            | ❌  | ✅            |
+| Responsive compound variants        | ❌            | ❌  | ✅ with `ccv` |
+
 ### Current Limitations
 
 - The plugin generates variants for all breakpoints defined in your theme, and does not include Panda's generated breakpoints, such as `mdDown`, `mdOnly`, `mdToLg`.
