@@ -80,7 +80,7 @@ export const crvParser = (
       continue;
     }
 
-    debug?.('plugin:crv', `crv replacing '${key}'`);
+    debug?.('plugin:crv', `creating variants: "${key}"`);
     call.replaceWithText(write({ key, value: style, breakpoints }));
   }
 

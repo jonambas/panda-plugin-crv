@@ -102,7 +102,7 @@ export const ccvParser = (
 
     debug?.(
       'plugin:crv',
-      `ccv replacing { ${variants.map((v) => `${v.getText()}, `)}}`,
+      `creating compound variants: "{ ${variants.map((v) => v.getText()).join(', ')} }"`,
     );
     spread.replaceWithText(write({ variants, value: style, breakpoints }));
   }
