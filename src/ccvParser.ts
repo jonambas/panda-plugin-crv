@@ -44,11 +44,13 @@ export const writeObject = (args: WriterArgs & { writer: CodeBlockWriter }) => {
       for (const property of variants) {
         if (!property.isKind(ts.SyntaxKind.PropertyAssignment)) continue;
         const initializer = property.getInitializer()?.getText() ?? '';
+
         writer
           .conditionalWrite(!!bp, `${makeKey(property.getName(), bp!)}: `)
-          .conditionalWrite(!!bp, `${clean(initializer)}, `)
-          .conditionalWrite(!bp, `${clean(property.getText())}, `);
+          .conditionalWrite(!!bp, `${clean(initializer)},\n`)
+          .conditionalWrite(!bp, `${clean(property.getText())},\n`);
       }
+
       writer.write('css: ').inlineBlock(() => {
         writer.conditionalWrite(!!bp, `'${bp}': {`);
         for (const variant of value.getProperties()) {

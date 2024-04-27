@@ -453,19 +453,27 @@ describe('ccv parser', () => {
           const styles = cva({
             compoundVariants: [
               {
-                variant1: 'red', variant2: 'blue', css: {
+                variant1: 'red',
+                variant2: 'blue',
+                css: {
                   bg: 'green',
                 }
               },{
-                variant1_sm: 'red', variant2_sm: 'blue', css: {
+                variant1_sm: 'red',
+                variant2_sm: 'blue',
+                css: {
                   'sm': {bg: 'green',},
                 }
               },{
-                variant1_md: 'red', variant2_md: 'blue', css: {
+                variant1_md: 'red',
+                variant2_md: 'blue',
+                css: {
                   'md': {bg: 'green',},
                 }
               },{
-                variant1_2lg: 'red', variant2_2lg: 'blue', css: {
+                variant1_2lg: 'red',
+                variant2_2lg: 'blue',
+                css: {
                   '2lg': {bg: 'green',},
                 }
               },
@@ -496,19 +504,27 @@ describe('ccv parser', () => {
           const styles = cva({
             compoundVariants: [
               {
-                variant1: 'red', variant2: 'blue', css: {
+                variant1: 'red',
+                variant2: 'blue',
+                css: {
                   bg: 'green',
                 }
               },{
-                variant1_sm: 'red', variant2_sm: 'blue', css: {
+                variant1_sm: 'red',
+                variant2_sm: 'blue',
+                css: {
                   'sm': {bg: 'green',},
                 }
               },{
-                variant1_md: 'red', variant2_md: 'blue', css: {
+                variant1_md: 'red',
+                variant2_md: 'blue',
+                css: {
                   'md': {bg: 'green',},
                 }
               },{
-                variant1_2lg: 'red', variant2_2lg: 'blue', css: {
+                variant1_2lg: 'red',
+                variant2_2lg: 'blue',
+                css: {
                   '2lg': {bg: 'green',},
                 }
               },
@@ -587,19 +603,27 @@ describe('ccv parser', () => {
           const styles = cva({
             compoundVariants: [
               {
-                variant1: 'red', variant2: 'blue', css: {
+                variant1: 'red',
+                variant2: 'blue',
+                css: {
                   foo: { bar: { baz: '#fff' }},
                 }
               },{
-                variant1_sm: 'red', variant2_sm: 'blue', css: {
+                variant1_sm: 'red',
+                variant2_sm: 'blue',
+                css: {
                   'sm': {foo: { bar: { baz: '#fff' }},},
                 }
               },{
-                variant1_md: 'red', variant2_md: 'blue', css: {
+                variant1_md: 'red',
+                variant2_md: 'blue',
+                css: {
                   'md': {foo: { bar: { baz: '#fff' }},},
                 }
               },{
-                variant1_2lg: 'red', variant2_2lg: 'blue', css: {
+                variant1_2lg: 'red',
+                variant2_2lg: 'blue',
+                css: {
                   '2lg': {foo: { bar: { baz: '#fff' }},},
                 }
               },
@@ -630,19 +654,27 @@ describe('ccv parser', () => {
           const styles = cva({
             compoundVariants: [
               {
-                variant1: 'red', variant2: 'blue', css: {
+                variant1: 'red',
+                variant2: 'blue',
+                css: {
                   foo: { '& > *': { "3baz": \`\${'#fff'}\`}},
                 }
               },{
-                variant1_sm: 'red', variant2_sm: 'blue', css: {
+                variant1_sm: 'red',
+                variant2_sm: 'blue',
+                css: {
                   'sm': {foo: { '& > *': { "3baz": \`\${'#fff'}\`}},},
                 }
               },{
-                variant1_md: 'red', variant2_md: 'blue', css: {
+                variant1_md: 'red',
+                variant2_md: 'blue',
+                css: {
                   'md': {foo: { '& > *': { "3baz": \`\${'#fff'}\`}},},
                 }
               },{
-                variant1_2lg: 'red', variant2_2lg: 'blue', css: {
+                variant1_2lg: 'red',
+                variant2_2lg: 'blue',
+                css: {
                   '2lg': {foo: { '& > *': { "3baz": \`\${'#fff'}\`}},},
                 }
               },
@@ -674,19 +706,27 @@ describe('ccv parser', () => {
             const styles = cva({
               compoundVariants: [
                 {
-                  variant1: true, variant2: false, css: {
+                  variant1: true,
+                  variant2: false,
+                  css: {
                     foo: { bar: { srOnly: false }},
                   }
                 },{
-                  variant1_sm: true, variant2_sm: false, css: {
+                  variant1_sm: true,
+                  variant2_sm: false,
+                  css: {
                     'sm': {foo: { bar: { srOnly: false }},},
                   }
                 },{
-                  variant1_md: true, variant2_md: false, css: {
+                  variant1_md: true,
+                  variant2_md: false,
+                  css: {
                     'md': {foo: { bar: { srOnly: false }},},
                   }
                 },{
-                  variant1_2lg: true, variant2_2lg: false, css: {
+                  variant1_2lg: true,
+                  variant2_2lg: false,
+                  css: {
                     '2lg': {foo: { bar: { srOnly: false }},},
                   }
                 },
@@ -718,19 +758,27 @@ describe('ccv parser', () => {
             const styles = cva({
               compoundVariants: [
                 {
-                  variant1: 1, variant2: 0, css: {
+                  variant1: 1,
+                  variant2: 0,
+                  css: {
                     foo: { opacity: 0.5 },
                   }
                 },{
-                  variant1_sm: 1, variant2_sm: 0, css: {
+                  variant1_sm: 1,
+                  variant2_sm: 0,
+                  css: {
                     'sm': {foo: { opacity: 0.5 },},
                   }
                 },{
-                  variant1_md: 1, variant2_md: 0, css: {
+                  variant1_md: 1,
+                  variant2_md: 0,
+                  css: {
                     'md': {foo: { opacity: 0.5 },},
                   }
                 },{
-                  variant1_2lg: 1, variant2_2lg: 0, css: {
+                  variant1_2lg: 1,
+                  variant2_2lg: 0,
+                  css: {
                     '2lg': {foo: { opacity: 0.5 },},
                   }
                 },
@@ -761,19 +809,27 @@ describe('ccv parser', () => {
             const styles = cva({
               compoundVariants: [
                 {
-                  variant1: 1, variant2: 0, css: {
+                  variant1: 1,
+                  variant2: 0,
+                  css: {
                     foo: { opacity: get('test'), bg: \`\${get('test')}\` },
                   }
                 },{
-                  variant1_sm: 1, variant2_sm: 0, css: {
+                  variant1_sm: 1,
+                  variant2_sm: 0,
+                  css: {
                     'sm': {foo: { opacity: get('test'), bg: \`\${get('test')}\` },},
                   }
                 },{
-                  variant1_md: 1, variant2_md: 0, css: {
+                  variant1_md: 1,
+                  variant2_md: 0,
+                  css: {
                     'md': {foo: { opacity: get('test'), bg: \`\${get('test')}\` },},
                   }
                 },{
-                  variant1_2lg: 1, variant2_2lg: 0, css: {
+                  variant1_2lg: 1,
+                  variant2_2lg: 0,
+                  css: {
                     '2lg': {foo: { opacity: get('test'), bg: \`\${get('test')}\` },},
                   }
                 },
@@ -810,36 +866,52 @@ describe('ccv parser', () => {
             const styles = cva({
               compoundVariants: [
                 {
-                  variant1: 1, variant2: 0, css: {
+                  variant1: 1,
+                  variant2: 0,
+                  css: {
                     foo: 'red',
                   }
                 },{
-                  variant1_sm: 1, variant2_sm: 0, css: {
+                  variant1_sm: 1,
+                  variant2_sm: 0,
+                  css: {
                     'sm': {foo: 'red',},
                   }
                 },{
-                  variant1_md: 1, variant2_md: 0, css: {
+                  variant1_md: 1,
+                  variant2_md: 0,
+                  css: {
                     'md': {foo: 'red',},
                   }
                 },{
-                  variant1_2lg: 1, variant2_2lg: 0, css: {
+                  variant1_2lg: 1,
+                  variant2_2lg: 0,
+                  css: {
                     '2lg': {foo: 'red',},
                   }
                 },
                 {
-                  variant1: 1, variant2: 1, css: {
+                  variant1: 1,
+                  variant2: 1,
+                  css: {
                     foo: 'blue',
                   }
                 },{
-                  variant1_sm: 1, variant2_sm: 1, css: {
+                  variant1_sm: 1,
+                  variant2_sm: 1,
+                  css: {
                     'sm': {foo: 'blue',},
                   }
                 },{
-                  variant1_md: 1, variant2_md: 1, css: {
+                  variant1_md: 1,
+                  variant2_md: 1,
+                  css: {
                     'md': {foo: 'blue',},
                   }
                 },{
-                  variant1_2lg: 1, variant2_2lg: 1, css: {
+                  variant1_2lg: 1,
+                  variant2_2lg: 1,
+                  css: {
                     '2lg': {foo: 'blue',},
                   }
                 },
