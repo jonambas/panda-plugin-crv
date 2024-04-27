@@ -1,10 +1,10 @@
-import type { ParserResultBeforeHookArgs } from '@pandacss/types';
 import {
   CodeBlockWriter,
   ObjectLiteralElementLike,
   ObjectLiteralExpression,
   SourceFile,
   ts,
+  WriterFunction,
 } from 'ts-morph';
 import type { PluginContext } from './types';
 import { makeKey } from './crv';
@@ -12,101 +12,98 @@ import { makeKey } from './crv';
 const clean = (str: string) => str.replace(/^\s+|\s+$|\s+(?=\s)/g, '');
 
 type WriterArgs = {
-  writer: CodeBlockWriter;
   variants: ObjectLiteralElementLike[];
-  value: ObjectLiteralExpression;
+  value: ObjectLiteralElementLike[];
   bp?: string;
   isLast?: boolean;
+  breakpoints?: string[];
 };
 
-export const writeObject = (args: WriterArgs) => {
+export const write = (args: WriterArgs): WriterFunction => {
+  const { variants, value, breakpoints = [] } = args;
+  return (writer) => {
+    writeObject({ writer, variants, value });
+
+    for (const bp of breakpoints) {
+      writeObject({
+        writer,
+        variants,
+        value,
+        bp,
+        isLast: bp === breakpoints.at(-1),
+      });
+    }
+  };
+};
+
+export const writeObject = (args: WriterArgs & { writer: CodeBlockWriter }) => {
   const { writer, variants, value, bp, isLast } = args;
 
-  writer.write('{');
+  writer
+    .inlineBlock(() => {
+      for (const property of variants) {
+        if (!property.isKind(ts.SyntaxKind.PropertyAssignment)) continue;
+        if (bp) {
+          const initializer = property.getInitializer()?.getText() ?? '';
+          writer
+            .write(`${makeKey(property.getName(), bp!)}: `)
+            .write(`${clean(initializer)},\n`);
+        } else {
+          writer.write(`${clean(property.getText())},\n`);
+        }
+      }
 
-  for (const property of variants) {
-    if (!property.isKind(ts.SyntaxKind.PropertyAssignment)) continue;
-    const initializer = property.getInitializer()?.getText() ?? '';
-    if (bp) {
-      writer.write(`${makeKey(property.getName(), bp)}: `);
-      writer.write(`${clean(initializer)},`);
-    } else {
-      writer.write(`${clean(property.getText())},`);
-    }
-  }
-  writer.write('css: {');
-
-  if (bp) writer.write(`'${bp}': {`);
-  for (const variant of value.getProperties()) {
-    writer.write(`${clean(variant.getText())},`);
-  }
-  if (bp) writer.write(`}},`);
-  if (!bp) writer.write(`},`);
-  writer.write(isLast ? '}' : '},');
+      writer.write('css: ').inlineBlock(() => {
+        writer.conditionalWrite(!!bp, `'${bp}': {`);
+        for (const variant of value) {
+          writer.write(`${clean(variant.getText())},`);
+        }
+        writer.conditionalWrite(!!bp, `},`);
+      });
+    })
+    .conditionalWrite(!isLast, ',');
 };
 
 export const ccvParser = (
-  args: ParserResultBeforeHookArgs,
   context: PluginContext,
   source: SourceFile,
   alias: string = 'ccv',
 ) => {
-  const { breakpoints, debug } = context;
+  const { breakpoints } = context;
 
   // Panda bug: spreads are not parsed in compoundVariants
   // Target spread elements so that we can replace them later
   const spreads = source
     .getDescendantsOfKind(ts.SyntaxKind.SpreadElement)
-    .filter((node) => node.getExpression()?.getText().startsWith(alias));
+    .filter((node) => node.getExpression().getText().startsWith(alias));
 
   if (!spreads.length) return;
 
-  for (const node of spreads) {
-    const call = node.getExpressionIfKind(ts.SyntaxKind.CallExpression);
+  for (const spread of spreads) {
+    const call = spread.getExpressionIfKind(ts.SyntaxKind.CallExpression);
 
     if (!call) continue;
 
-    // Only one aarg
+    // Only one arg
     const callArgs = call.getArguments().at(0);
     if (!callArgs || !callArgs.isKind(ts.SyntaxKind.ObjectLiteralExpression))
       continue;
 
-    const properties = callArgs.getProperties();
-    let style;
+    const properties = callArgs.getChildrenOfKind(
+      ts.SyntaxKind.PropertyAssignment,
+    );
 
-    const variants = properties.filter((prop) => {
-      if (!prop.isKind(ts.SyntaxKind.PropertyAssignment)) return false;
-      return prop.getName() !== 'css';
-    });
-
-    for (const property of properties) {
-      if (!property.isKind(ts.SyntaxKind.PropertyAssignment)) continue;
-      if (property.getName() === 'css') {
-        style = property.getInitializer();
-      }
-    }
+    const variants = properties.filter((prop) => prop.getName() !== 'css');
+    const style = properties
+      .find((prop) => prop.getName() === 'css')
+      ?.getInitializer();
 
     if (!style || !style.isKind(ts.SyntaxKind.ObjectLiteralExpression)) {
       continue;
     }
 
-    const replaced = node.replaceWithText((writer) => {
-      writeObject({ writer, variants, value: style });
-
-      for (const [i, bp] of breakpoints.entries()) {
-        writeObject({
-          writer,
-          variants,
-          value: style,
-          bp,
-          isLast: i === breakpoints.length - 1,
-        });
-      }
-    });
-
-    debug?.(
-      `plugin:crv`,
-      `ccv: '${replaced.getText()}': ${args.filePath.split('/').at(-1)}`,
+    spread.replaceWithText(
+      write({ variants, value: style.getProperties(), breakpoints }),
     );
   }
 
