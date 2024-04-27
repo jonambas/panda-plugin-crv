@@ -48,7 +48,7 @@ const writeObject = (args: WriterArgs & { writer: CodeBlockWriter }) => {
             })
             .write(', ');
         } else {
-          writer.write(`${clean(variant.getText())}, `);
+          writer.writeLine(`${clean(variant.getText())}, `);
         }
       }
     })

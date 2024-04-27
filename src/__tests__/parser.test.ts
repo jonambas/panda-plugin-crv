@@ -37,7 +37,8 @@ describe('crv parser', () => {
             variants: {
               ...{
                 tone:{
-                  negative: { bg: "red.200" }, positive: { bg: "green.200" }, 
+                  negative: { bg: "red.200" }, 
+                  positive: { bg: "green.200" }, 
                 },
                 tone_sm:{
                   negative: {
@@ -89,7 +90,8 @@ describe('crv parser', () => {
             variants: {
               ...{
                 variant:{
-                  foo: {}, bar: {}, 
+                  foo: {}, 
+                  bar: {}, 
                 },
                 variant_sm:{
                   foo: {
@@ -292,7 +294,8 @@ describe('crv parser', () => {
               variants: {
                 ...{
                   visible:{
-                    true: { srOnly: false }, false: { srOnly: true }, 
+                    true: { srOnly: false }, 
+                    false: { srOnly: true }, 
                   },
                   visible_sm:{
                     true: {
@@ -394,7 +397,8 @@ describe('crv parser', () => {
               variants: {
                 ...{
                   tone:{
-                    positive: { bg: get('color') }, negative: { bg: get('color2') }, 
+                    positive: { bg: get('color') }, 
+                    negative: { bg: get('color2') }, 
                   },
                   tone_sm:{
                     positive: {
