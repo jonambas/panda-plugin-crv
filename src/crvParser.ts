@@ -1,9 +1,9 @@
-import type { ParserResultBeforeHookArgs } from '@pandacss/types';
 import {
   CodeBlockWriter,
   ObjectLiteralExpression,
   SourceFile,
   ts,
+  WriterFunction,
 } from 'ts-morph';
 import { makeKey } from './crv';
 import type { PluginContext } from './types';
@@ -11,34 +11,50 @@ import type { PluginContext } from './types';
 const clean = (str: string) => str.replace(/^\s+|\s+$|\s+(?=\s)/g, '');
 
 type WriterArgs = {
-  writer: CodeBlockWriter;
   key: string;
   value: ObjectLiteralExpression;
   bp?: string;
   isLast?: boolean;
+  breakpoints?: string[];
 };
 
-export const writeObject = (args: WriterArgs) => {
-  const { writer, key, value, bp } = args;
-  writer.write(`${key}: {`);
+const write = (args: WriterArgs): WriterFunction => {
+  const { key, value, breakpoints = [] } = args;
+  return (writer) => {
+    writer.inlineBlock(() => {
+      writeObject({ writer, key, value });
+      for (const bp of breakpoints) {
+        writeObject({ writer, key: makeKey(key, bp), value, bp });
+      }
+    });
+  };
+};
 
-  for (const variant of value.getProperties()) {
-    if (!variant.isKind(ts.SyntaxKind.PropertyAssignment)) continue;
-    const initializer = variant.getInitializer()?.getText() ?? '';
-    if (bp) {
-      writer.write(`${variant.getName()}: {`);
-      writer.write(`'${bp}':`);
-      writer.write(`${clean(initializer)},`);
-      writer.write(`},`);
-    } else {
-      writer.write(`${clean(variant.getText())},`);
-    }
-  }
-  writer.write('},');
+const writeObject = (args: WriterArgs & { writer: CodeBlockWriter }) => {
+  const { writer, key, value, bp } = args;
+  writer
+    .write(`${key}:`)
+    .inlineBlock(() => {
+      for (const variant of value.getProperties()) {
+        if (!variant.isKind(ts.SyntaxKind.PropertyAssignment)) continue;
+        const initializer = variant.getInitializer()?.getText() ?? '';
+        if (bp) {
+          writer
+            .write(`${variant.getName()}:`)
+            .inlineBlock(() => {
+              writer.write(`'${bp}':`);
+              writer.write(`${clean(initializer)},`);
+            })
+            .write(',');
+        } else {
+          writer.write(`${clean(variant.getText())},`);
+        }
+      }
+    })
+    .write(',');
 };
 
 export const crvParser = (
-  args: ParserResultBeforeHookArgs,
   context: PluginContext,
   source: SourceFile,
   alias: string = 'crv',
@@ -50,10 +66,9 @@ export const crvParser = (
 
   if (!calls.length) return;
 
-  for (const node of calls) {
-    const prop = node.getArguments()[0];
-    const style = node.getArguments()[1];
-    let key = prop?.getText() ?? '';
+  for (const call of calls) {
+    const [prop, style] = call.getArguments();
+    let key = '';
 
     // This first arg should always be a string anyways
     if (prop && prop.isKind(ts.SyntaxKind.StringLiteral)) {
@@ -64,16 +79,8 @@ export const crvParser = (
       continue;
     }
 
-    node.replaceWithText((writer) => {
-      writer.write('{');
-      writeObject({ writer, key, value: style });
-      for (const bp of breakpoints) {
-        writeObject({ writer, key: makeKey(key, bp), value: style, bp });
-      }
-      writer.write('}');
-    });
-
-    debug?.(`plugin:crv`, `crv: '${key}': ${args.filePath.split('/').at(-1)}`);
+    debug?.('plugin:crv', `crv replacing '${key}'`);
+    call.replaceWithText(write({ key, value: style, breakpoints }));
   }
 
   return source.getText();

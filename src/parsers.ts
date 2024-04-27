@@ -35,8 +35,10 @@ export const parsers = (
   args: ParserResultBeforeHookArgs,
   context: PluginContext,
 ) => {
-  const { project } = context;
+  const { project, debug } = context;
   let changed;
+
+  debug?.(`plugin:crv`, `parsing ${args.filePath.split('/').at(-1)}`);
 
   const source = project.createSourceFile('__crv-parser.tsx', args.content, {
     overwrite: true,
@@ -45,11 +47,11 @@ export const parsers = (
   const imports = getImports(source);
 
   if (imports.crv) {
-    changed = crvParser(args, context, source, imports.crv);
+    changed = crvParser(context, source, imports.crv);
   }
 
   if (imports.ccv) {
-    changed = ccvParser(args, context, source, imports.ccv) ?? changed;
+    changed = ccvParser(context, source, imports.ccv) ?? changed;
   }
 
   if (!changed) return;
