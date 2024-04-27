@@ -38,19 +38,22 @@ describe('crv parser', () => {
               ...{
                 tone:{
                   negative: { bg: "red.200" }, positive: { bg: "green.200" }, 
-                },tone_sm:{
+                },
+                tone_sm:{
                   negative: {
                     'sm': { bg: "red.200" },
                   }, positive: {
                     'sm': { bg: "green.200" },
                   }, 
-                },tone_md:{
+                },
+                tone_md:{
                   negative: {
                     'md': { bg: "red.200" },
                   }, positive: {
                     'md': { bg: "green.200" },
                   }, 
-                },tone_2lg:{
+                },
+                tone_2lg:{
                   negative: {
                     '2lg': { bg: "red.200" },
                   }, positive: {
@@ -87,19 +90,22 @@ describe('crv parser', () => {
               ...{
                 variant:{
                   foo: {}, bar: {}, 
-                },variant_sm:{
+                },
+                variant_sm:{
                   foo: {
                     'sm': {},
                   }, bar: {
                     'sm': {},
                   }, 
-                },variant_md:{
+                },
+                variant_md:{
                   foo: {
                     'md': {},
                   }, bar: {
                     'md': {},
                   }, 
-                },variant_2lg:{
+                },
+                variant_2lg:{
                   foo: {
                     '2lg': {},
                   }, bar: {
@@ -192,15 +198,18 @@ describe('crv parser', () => {
               ...{
                 tone:{
                   positive: { foo: { bar: { baz: {}}} }, 
-                },tone_sm:{
+                },
+                tone_sm:{
                   positive: {
                     'sm': { foo: { bar: { baz: {}}} },
                   }, 
-                },tone_md:{
+                },
+                tone_md:{
                   positive: {
                     'md': { foo: { bar: { baz: {}}} },
                   }, 
-                },tone_2lg:{
+                },
+                tone_2lg:{
                   positive: {
                     '2lg': { foo: { bar: { baz: {}}} },
                   }, 
@@ -238,15 +247,18 @@ describe('crv parser', () => {
               ...{
                 tone:{
                   positive: { 'single': '#fff', "double": "#fff", tick: \`#fff\`, literal: \`\${'#fff'}\` }, 
-                },tone_sm:{
+                },
+                tone_sm:{
                   positive: {
                     'sm': { 'single': '#fff', "double": "#fff", tick: \`#fff\`, literal: \`\${'#fff'}\` },
                   }, 
-                },tone_md:{
+                },
+                tone_md:{
                   positive: {
                     'md': { 'single': '#fff', "double": "#fff", tick: \`#fff\`, literal: \`\${'#fff'}\` },
                   }, 
-                },tone_2lg:{
+                },
+                tone_2lg:{
                   positive: {
                     '2lg': { 'single': '#fff', "double": "#fff", tick: \`#fff\`, literal: \`\${'#fff'}\` },
                   }, 
@@ -281,19 +293,22 @@ describe('crv parser', () => {
                 ...{
                   visible:{
                     true: { srOnly: false }, false: { srOnly: true }, 
-                  },visible_sm:{
+                  },
+                  visible_sm:{
                     true: {
                       'sm': { srOnly: false },
                     }, false: {
                       'sm': { srOnly: true },
                     }, 
-                  },visible_md:{
+                  },
+                  visible_md:{
                     true: {
                       'md': { srOnly: false },
                     }, false: {
                       'md': { srOnly: true },
                     }, 
-                  },visible_2lg:{
+                  },
+                  visible_2lg:{
                     true: {
                       '2lg': { srOnly: false },
                     }, false: {
@@ -331,15 +346,18 @@ describe('crv parser', () => {
                 ...{
                   tone:{
                     positive: { number: 0 }, 
-                  },tone_sm:{
+                  },
+                  tone_sm:{
                     positive: {
                       'sm': { number: 0 },
                     }, 
-                  },tone_md:{
+                  },
+                  tone_md:{
                     positive: {
                       'md': { number: 0 },
                     }, 
-                  },tone_2lg:{
+                  },
+                  tone_2lg:{
                     positive: {
                       '2lg': { number: 0 },
                     }, 
@@ -377,19 +395,22 @@ describe('crv parser', () => {
                 ...{
                   tone:{
                     positive: { bg: get('color') }, negative: { bg: get('color2') }, 
-                  },tone_sm:{
+                  },
+                  tone_sm:{
                     positive: {
                       'sm': { bg: get('color') },
                     }, negative: {
                       'sm': { bg: get('color2') },
                     }, 
-                  },tone_md:{
+                  },
+                  tone_md:{
                     positive: {
                       'md': { bg: get('color') },
                     }, negative: {
                       'md': { bg: get('color2') },
                     }, 
-                  },tone_2lg:{
+                  },
+                  tone_2lg:{
                     positive: {
                       '2lg': { bg: get('color') },
                     }, negative: {

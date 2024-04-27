@@ -52,7 +52,8 @@ const writeObject = (args: WriterArgs & { writer: CodeBlockWriter }) => {
         }
       }
     })
-    .write(',');
+    .write(',')
+    .newLine();
 };
 
 export const crvParser = (
