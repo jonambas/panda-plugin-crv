@@ -13,7 +13,7 @@ const clean = (str: string) => str.replace(/^\s+|\s+$|\s+(?=\s)/g, '');
 
 type WriterArgs = {
   variants: ObjectLiteralElementLike[];
-  value: ObjectLiteralExpression;
+  value: ObjectLiteralElementLike[];
   bp?: string;
   isLast?: boolean;
   breakpoints?: string[];
@@ -24,13 +24,13 @@ export const write = (args: WriterArgs): WriterFunction => {
   return (writer) => {
     writeObject({ writer, variants, value });
 
-    for (const [i, bp] of breakpoints.entries()) {
+    for (const bp of breakpoints) {
       writeObject({
         writer,
         variants,
         value,
         bp,
-        isLast: i === breakpoints.length - 1,
+        isLast: bp === breakpoints.at(-1),
       });
     }
   };
@@ -43,17 +43,19 @@ export const writeObject = (args: WriterArgs & { writer: CodeBlockWriter }) => {
     .inlineBlock(() => {
       for (const property of variants) {
         if (!property.isKind(ts.SyntaxKind.PropertyAssignment)) continue;
-        const initializer = property.getInitializer()?.getText() ?? '';
-
-        writer
-          .conditionalWrite(!!bp, `${makeKey(property.getName(), bp!)}: `)
-          .conditionalWrite(!!bp, `${clean(initializer)},\n`)
-          .conditionalWrite(!bp, `${clean(property.getText())},\n`);
+        if (bp) {
+          const initializer = property.getInitializer()?.getText() ?? '';
+          writer
+            .write(`${makeKey(property.getName(), bp!)}: `)
+            .write(`${clean(initializer)},\n`);
+        } else {
+          writer.write(`${clean(property.getText())},\n`);
+        }
       }
 
       writer.write('css: ').inlineBlock(() => {
         writer.conditionalWrite(!!bp, `'${bp}': {`);
-        for (const variant of value.getProperties()) {
+        for (const variant of value) {
           writer.write(`${clean(variant.getText())},`);
         }
         writer.conditionalWrite(!!bp, `},`);
@@ -67,7 +69,7 @@ export const ccvParser = (
   source: SourceFile,
   alias: string = 'ccv',
 ) => {
-  const { breakpoints, debug } = context;
+  const { breakpoints } = context;
 
   // Panda bug: spreads are not parsed in compoundVariants
   // Target spread elements so that we can replace them later
@@ -100,11 +102,9 @@ export const ccvParser = (
       continue;
     }
 
-    debug?.(
-      'plugin:crv',
-      `creating compound variants: "{ ${variants.map((v) => v.getText()).join(', ')} }"`,
+    spread.replaceWithText(
+      write({ variants, value: style.getProperties(), breakpoints }),
     );
-    spread.replaceWithText(write({ variants, value: style, breakpoints }));
   }
 
   return source.getText();

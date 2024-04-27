@@ -1,6 +1,6 @@
 import {
   CodeBlockWriter,
-  ObjectLiteralExpression,
+  ObjectLiteralElementLike,
   SourceFile,
   ts,
   WriterFunction,
@@ -12,7 +12,7 @@ const clean = (str: string) => str.replace(/^\s+|\s+$|\s+(?=\s)/g, '');
 
 type WriterArgs = {
   key: string;
-  value: ObjectLiteralExpression;
+  value: ObjectLiteralElementLike[];
   bp?: string;
   isLast?: boolean;
   breakpoints?: string[];
@@ -32,14 +32,13 @@ const write = (args: WriterArgs): WriterFunction => {
 
 const writeObject = (args: WriterArgs & { writer: CodeBlockWriter }) => {
   const { writer, key, value, bp } = args;
-  const variants = value.getProperties();
   writer
     .write(`${key}:`)
     .inlineBlock(() => {
-      for (const variant of variants) {
+      for (const variant of value) {
         if (!variant.isKind(ts.SyntaxKind.PropertyAssignment)) continue;
-        const initializer = variant.getInitializer()?.getText() ?? '';
         if (bp) {
+          const initializer = variant.getInitializer()?.getText() ?? '';
           writer
             .write(`${variant.getName()}: `)
             .inlineBlock(() => {
@@ -60,7 +59,7 @@ export const crvParser = (
   source: SourceFile,
   alias: string = 'crv',
 ) => {
-  const { breakpoints, debug } = context;
+  const { breakpoints } = context;
   const calls = source
     .getDescendantsOfKind(ts.SyntaxKind.CallExpression)
     .filter((node) => node.getExpression().getText() === alias);
@@ -80,8 +79,9 @@ export const crvParser = (
       continue;
     }
 
-    debug?.('plugin:crv', `creating variants: "${key}"`);
-    call.replaceWithText(write({ key, value: style, breakpoints }));
+    call.replaceWithText(
+      write({ key, value: style.getProperties(), breakpoints }),
+    );
   }
 
   return source.getText();
