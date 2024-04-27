@@ -32,22 +32,23 @@ const write = (args: WriterArgs): WriterFunction => {
 
 const writeObject = (args: WriterArgs & { writer: CodeBlockWriter }) => {
   const { writer, key, value, bp } = args;
+  const variants = value.getProperties();
   writer
     .write(`${key}:`)
     .inlineBlock(() => {
-      for (const variant of value.getProperties()) {
+      for (const variant of variants) {
         if (!variant.isKind(ts.SyntaxKind.PropertyAssignment)) continue;
         const initializer = variant.getInitializer()?.getText() ?? '';
         if (bp) {
           writer
-            .write(`${variant.getName()}:`)
+            .write(`${variant.getName()}: `)
             .inlineBlock(() => {
-              writer.write(`'${bp}':`);
+              writer.write(`'${bp}': `);
               writer.write(`${clean(initializer)},`);
             })
-            .write(',');
+            .write(', ');
         } else {
-          writer.write(`${clean(variant.getText())},`);
+          writer.write(`${clean(variant.getText())}, `);
         }
       }
     })

@@ -46,10 +46,10 @@ export const writeObject = (args: WriterArgs & { writer: CodeBlockWriter }) => {
         const initializer = property.getInitializer()?.getText() ?? '';
         writer
           .conditionalWrite(!!bp, `${makeKey(property.getName(), bp!)}: `)
-          .conditionalWrite(!!bp, `${clean(initializer)},`)
-          .conditionalWrite(!bp, `${clean(property.getText())},`);
+          .conditionalWrite(!!bp, `${clean(initializer)}, `)
+          .conditionalWrite(!bp, `${clean(property.getText())}, `);
       }
-      writer.write('css:').inlineBlock(() => {
+      writer.write('css: ').inlineBlock(() => {
         writer.conditionalWrite(!!bp, `'${bp}': {`);
         for (const variant of value.getProperties()) {
           writer.write(`${clean(variant.getText())},`);
