@@ -80,9 +80,9 @@ Using your component will look like this:
 
 ---
 
-### Compound Variants
+### Compound Variants (experimental)
 
-This plugin supports responsive compound variants, through the `ccv` function. Note: this can produce a large amount of compound variants. Make sure your unused CSS is purged properly.
+This plugin supports responsive compound variants, through the `ccv` function.
 
 ```tsx
 import { ccv, crv, cva } from '@/styled-system/css';
@@ -125,6 +125,16 @@ The above code will render `"green.500"` if `variant1` is `"primary"` and if `va
 // -> opacity_0 lg:opacity_1 lg:bg_blue.500 bg_gray.500 lg:text_green.500
 ```
 
+**Note**: Compound variants with `ccv` don't infer a variants' value unless the same keys are specified for all variants used in the compound variant. For example:
+
+```tsx
+// ✅ `md` is specified on both
+<Component variant1={{ base: 'secondary', md: 'primary' }} variant2={{ base: 'false', md: true  }}>
+
+// ⛔️ `variant1` at `md` is inferred, this won't work
+<Component variant1="primary" variant2={{ base: 'false', md: true  }}>
+```
+
 ---
 
 ### Should I use this plugin?
@@ -132,8 +142,6 @@ The above code will render `"green.500"` if `variant1` is `"primary"` and if `va
 This plugin solves a specific use case that Panda's config recipes and atomic (cva) recipes do not cover. Generally, if you maintain a component library, and need to support **responsive variants**, with **responsive compound variants**, this plugin is for you.
 
 See Panda's documenation on [config recipes vs. atomic recipes (cva)](https://panda-css.com/docs/concepts/recipes#should-i-use-atomic-or-config-recipes-).
-
-**Note**: config recipes [require manual tracking](https://panda-css.com/docs/concepts/recipes#advanced-jsx-tracking) if components are extended.
 
 |                                     | config | cva | cva + crv |
 | ----------------------------------- | ------ | --- | --------- |
