@@ -84,16 +84,6 @@ Using your component will look like this:
 
 This plugin supports responsive compound variants, through the `ccv` function.
 
-**Note**: Compound variants with `ccv` don't infer a variants' value unless the same keys are specified for all variants used in the compound variant. For example:
-
-```tsx
-// ✅ `md` is specified on both
-<Component variant1={{ base: 'secondary', md: 'primary' }} variant2={{ base: 'false', md: true  }}>
-
-// ⛔️ `variant1` at `md` is inferred, this won't work
-<Component variant1="primary" variant2={{ base: 'false', md: true  }}>
-```
-
 ```tsx
 import { ccv, crv, cva } from '@/styled-system/css';
 
@@ -133,6 +123,16 @@ The above code will render `"green.500"` if `variant1` is `"primary"` and if `va
   variant2={{ base: false, lg: true }}
 />
 // -> opacity_0 lg:opacity_1 lg:bg_blue.500 bg_gray.500 lg:text_green.500
+```
+
+**Note**: Compound variants with `ccv` don't infer a variants' value unless the same keys are specified for all variants used in the compound variant. For example:
+
+```tsx
+// ✅ `md` is specified on both
+<Component variant1={{ base: 'secondary', md: 'primary' }} variant2={{ base: 'false', md: true  }}>
+
+// ⛔️ `variant1` at `md` is inferred, this won't work
+<Component variant1="primary" variant2={{ base: 'false', md: true  }}>
 ```
 
 ---
