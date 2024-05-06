@@ -80,13 +80,11 @@ Using your component will look like this:
 
 ---
 
-### Compound Variants
+### Compound Variants (experimental)
 
-This plugin supports responsive compound variants, through the `ccv` function. Note: this can produce a large amount of compound variants.
+This plugin supports responsive compound variants, through the `ccv` function.
 
-**Note**:
-
-Compound variants with `ccv` don't infer a variants' value unless the same keys are specified for all variants used in the compound variant. For example:
+**Note**: Compound variants with `ccv` don't infer a variants' value unless the same keys are specified for all variants used in the compound variant. For example:
 
 ```tsx
 // ✅ `md` is specified on both
