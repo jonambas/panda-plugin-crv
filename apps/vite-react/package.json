@@ -23,6 +23,6 @@
     "@vitejs/plugin-react": "4.3.0",
     "panda-plugin-crv": "file:../../",
     "panda-plugin-ct": "0.1.2",
-    "vite": "5.2.12"
+    "vite": "5.2.13"
   }
 }
