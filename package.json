@@ -44,7 +44,7 @@
     "e2e": "playwright test --ui"
   },
   "dependencies": {
-    "ts-morph": "22.0.0"
+    "ts-morph": "23.0.0"
   },
   "devDependencies": {
     "@pandacss/dev": "0.41.0",
