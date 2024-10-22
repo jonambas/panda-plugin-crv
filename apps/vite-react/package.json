@@ -20,7 +20,7 @@
     "@pandacss/dev": "0.41.0",
     "@types/react": "18.3.11",
     "@types/react-dom": "18.3.1",
-    "@vitejs/plugin-react": "4.3.1",
+    "@vitejs/plugin-react": "4.3.3",
     "panda-plugin-crv": "file:../../",
     "panda-plugin-ct": "0.1.2",
     "vite": "5.4.1"
